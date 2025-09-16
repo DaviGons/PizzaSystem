@@ -21,17 +21,17 @@ while (true) {
 
     if (opmenu === "1"){
         const gerarProximoId = (): string => {
-        if (!fs.existsSync(fileName) || fs.readFileSync(fileName, 'utf-8').trim() === '') {
-            return '001';
-        }
-        
-        const data = fs.readFileSync(fileName, 'utf-8');
-        const linhas = data.trim().split('\n').filter(Boolean);
-        const ultimoIdString = linhas[linhas.length - 1].split(';')[0];
-        const proximoId = parseInt(ultimoIdString) + 1;
-        
-        return proximoId.toString().padStart(3, '0');
-    };
+            if (!fs.existsSync(fileName) || fs.readFileSync(fileName, 'utf-8').trim() === '') {
+                return '001';
+            }
+            
+            const data = fs.readFileSync(fileName, 'utf-8');
+            const linhas = data.trim().split('\n').filter(Boolean);
+            const ultimoIdString = linhas[linhas.length - 1].split(';')[0];
+            const proximoId = parseInt(ultimoIdString) + 1;
+            
+            return proximoId.toString().padStart(3, '0');
+        };
         console.log("\n=====================================================");
         console.log("             CADASTRO DE CLIENTE");
         console.log("=======================================================");

@@ -1,5 +1,5 @@
 {
-    "compilerOptions": {
+"compilerOptions": {
         // ESSENCIAIS PARA NODE.JS E TYPESCRIPT
         "target": "es2020",
         "module": "es2020",
