@@ -50,7 +50,33 @@ while (true) {
         console.log("=====================================================\n");
     }
     if (opmenu === "2"){
-        
+                const gerarProximoId = (): string => {
+            if (!fs.existsSync(fileName) || fs.readFileSync(fileName, 'utf-8').trim() === '') {
+                return '01';
+            }
+            
+            const data = fs.readFileSync(fileName, 'utf-8');
+            const linhas = data.trim().split('\n').filter(Boolean);
+            const ultimoIdString = linhas[linhas.length - 1].split(';')[0];
+            const proximoId = parseInt(ultimoIdString) + 1;
+            
+            return proximoId.toString().padStart(3, '0');
+        };
+        console.log("\n=====================================================");
+        console.log("             CADASTRO DE PIZZA");
+        console.log("=======================================================");
+        const fileName = "cardapio.txt"
+
+        const sabor: string = readlineSync.question('Sabor: ');
+        const ingredientes: string = readlineSync.question('Ingredientes: ');
+        const preco: string = readlineSync.question('Preço: ');
+        const id = gerarProximoId();
+        const dadosPizza = `${id};${sabor};${ingredientes};${preco};\n`;
+        fs.appendFileSync(fileName, dadosPizza, 'utf-8');
+
+        console.log("\nSabor de Pizza Cadastrado com Sucesso!");
+        console.log(`ID gerado: ${id}`);
+        console.log("=====================================================\n");
     }
     if (opmenu === "3"){
         

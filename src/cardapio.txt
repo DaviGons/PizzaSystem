@@ -1,10 +1,10 @@
-01;Pepperoni;Molho de Tomate, Mussarela, Pepperoni;49.90
-02;Frango com Catupiry;Molho de Tomate, Mussarela, Frango Desfiado, Catupiry;55.90
-03;Hot-Dog;Molho de Tomate, Mussarela, Salsicha, Batata Palha, Milho, Catupiry;55.90
-04;Calabresa;Molho de Tomate, Mussarela, Calabresa;49.90
-05;Paraguaia;Molho de Tomate, Mussarela, Calabresa, Ervilha, Cebola;59.90
-06;Marguerita;Molho de Tomate, Mussarela, Mangericão, Tomate;49.90
-07;Montanhosa;Molho de Tomate, Mussarela, Calabresa Filetada, Lombo Filetado, Cheddar; 69.90
-08;Atum; Molho de Tomate, Mussarela, Atum, Cebola, Azeitona; 49.90
-09;Sete Queijos;Catupiry, Cheddar, Parmesão, Provolone, Gorgonzola, Mussarela, Cream Cheese, Orégano; 75.90
-10;M&M; Chocolate, Confete Colorido; 59.90
+001;Pepperoni;Molho de Tomate, Mussarela, Pepperoni;49.90
+002;Frango com Catupiry;Molho de Tomate, Mussarela, Frango Desfiado, Catupiry;55.90
+003;Hot-Dog;Molho de Tomate, Mussarela, Salsicha, Batata Palha, Milho, Catupiry;55.90
+004;Calabresa;Molho de Tomate, Mussarela, Calabresa;49.90
+005;Paraguaia;Molho de Tomate, Mussarela, Calabresa, Ervilha, Cebola;59.90
+006;Marguerita;Molho de Tomate, Mussarela, Mangericão, Tomate;49.90
+007;Montanhosa;Molho de Tomate, Mussarela, Calabresa Filetada, Lombo Filetado, Cheddar; 69.90
+008;Atum; Molho de Tomate, Mussarela, Atum, Cebola, Azeitona; 49.90
+009;Sete Queijos;Catupiry, Cheddar, Parmesão, Provolone, Gorgonzola, Mussarela, Cream Cheese, Orégano; 75.90
+010;M&M; Chocolate, Confete Colorido; 59.90
