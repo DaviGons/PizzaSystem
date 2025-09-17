@@ -1,6 +1,5 @@
-001;Osvaldo De Caxias;1199870-7645;123.456.789-01;Rua das Caixas, 230
-002;Bruce Wayne;1199320-4432;987.654.321-09;Rua Valdir Morcego, 4
-003;Anakin Skywalker;1199879-9872;112.233.445-56;Rua Mustafar, 11
-004;Carlos Alberto;11993403-4452;678.901.234-56;Rua Dr. Cliberto Klisd, 665
-005;Fabiano Rotundo da Silva;1199700-7172;345.678.901-23;Rua Futura, 76006;das;da;asd;da
-006;davi;3912;afso;1499219192
+001;Osvaldo De Caxias;1199870-7645;Rua das Caixas, 230;123.456.789-01;1
+002;Bruce Wayne;1199320-4432;Rua Valdir Morcego, 4;987.654.321-09;1
+003;Anakin Skywalker;1199879-9872;Rua Mustafar, 11;112.233.445-56;1
+004;Carlos Alberto;11993403-4452;Rua Dr. Cliberto Klisd, 665;678.901.234-56;1
+005;Fabiano Rotundo da Silva;1199700-7172;Rua Futura, 76;345.678.901-23;0

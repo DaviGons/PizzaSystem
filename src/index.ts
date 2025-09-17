@@ -44,17 +44,18 @@ const gerarProximoId = (fileName: string, padLength: number = 3): string => {
 };
 
 // =========================================================================================
-// NOVAS FUNÇÕES PARA A INTERFACE MAIS LIMPA
+// FUNÇÕES DE INTERFACE MAIS LIMPA
 // =========================================================================================
 
-// Exibe a lista de clientes de forma limpa, mostrando apenas o ID e o nome.
+// Exibe a lista de clientes de forma limpa, mostrando ID, nome e status.
 const exibirClientes = (clientes: string[]) => {
     console.log("=====================================================");
     console.log("             CLIENTES CADASTRADOS");
     console.log("=====================================================");
     clientes.forEach(cliente => {
-        const [id, nome] = cliente.split(';');
-        console.log(`[ID: ${id}] - ${nome}`);
+        const [id, nome, telefone, endereco, cpf, status] = cliente.split(';');
+        const statusTexto = status === '1' ? 'Ativo' : 'Banido';
+        console.log(`[ID: ${id}] - ${nome} - Status: ${statusTexto}`);
     });
     console.log("=====================================================");
 };
@@ -74,7 +75,7 @@ const exibirCardapio = (cardapio: string[]) => {
 };
 
 // =========================================================================================
-// FIM DAS NOVAS FUNÇÕES
+// FIM DAS FUNÇÕES
 // =========================================================================================
 
 // Início do nosso loop principal. Ele vai rodar infinitamente até que a gente use o 'break'.
@@ -112,8 +113,8 @@ while (true) {
         const cpf: string = readlineSync.question('CPF: ');
         // Usa nossa função pra gerar o próximo ID com 3 dígitos.
         const id = gerarProximoId(fileName, 3);
-        // Junta todos os dados em uma única string, no formato que o arquivo exige.
-        const dadosCliente = `${id};${nome};${telefone};${endereco};${cpf}\n`;
+        // Junta todos os dados em uma única string, no formato que o arquivo exige, com status '1' (ativo).
+        const dadosCliente = `${id};${nome};${telefone};${endereco};${cpf};1\n`;
         // Adiciona a string no final do arquivo sem apagar o que já existe.
         fs.appendFileSync(fileName, dadosCliente, 'utf-8');
 
@@ -139,7 +140,7 @@ while (true) {
         // Gera o ID da pizza com 2 dígitos.
         const id = gerarProximoId(fileName, 2);
         // Agora, a gente inclui o status '1' (disponível) ao final da linha.
-        const dadosPizza = `${id};${sabor};${ingredientes};${preco};1\n`;
+        const dadosPizza = `${id};${sabor};${ingredientes};${preco.toFixed(2)};1\n`;
         fs.appendFileSync(fileName, dadosPizza, 'utf-8');
 
         console.log("\nSabor de Pizza Cadastrado com Sucesso!");
@@ -171,6 +172,9 @@ while (true) {
         // Verificamos se encontramos os dados.
         if (!cliente) {
             console.log("\nErro: Cliente não encontrado.");
+        } else if (cliente.split(';')[5] === '0') {
+            // VERIFICA SE O CLIENTE ESTÁ BANIDO
+            console.log("\nErro: Este cliente está banido e não pode fazer pedidos.");
         } else if (!pizza) {
             console.log("\nErro: Pizza não encontrada.");
         } else if (pizza.split(';')[4] === '0') {
@@ -267,9 +271,6 @@ while (true) {
         console.log("=======================================================");
         const fileName = "cardapio.txt";
         let cardapio = getLines(fileName);
-        
-        // ADICIONE ESTA LINHA PARA VER O CONTEÚDO DO ARRAY
-        console.log(cardapio); 
 
         // Primeiro, mostramos o cardápio atual com status.
         console.log("Cardápio Atual:");
@@ -327,9 +328,71 @@ while (true) {
         }
     }
     
-    if (opmenu === "6"){
-        
+    // === OPÇÃO [6] GERENCIAR CADASTROS ===
+    // 'if' para quando a opção de menu for '6'.
+    // Lógica para gerenciar cadastros de clientes (deletar, banir, editar).
+    if (opmenu === "6") {
+        clearConsole();
+        console.log("\n=====================================================");
+        console.log("             GERENCIAR CADASTROS");
+        console.log("=======================================================");
+        const fileName = "cadastroCliente.txt";
+        let clientes = getLines(fileName);
+        // Primeiro, mostramos a lista de clientes com seus status.
+        exibirClientes(clientes);
+
+        console.log("\nOpções de Gerenciamento:");
+        console.log("[1] Deletar cadastro");
+        console.log("[2] Banir cadastro");
+        console.log("[3] Editar informações");
+        console.log("[0] Voltar ao menu principal");
+
+        const subOpcao = readlineSync.question('Digite a opção desejada: ');
+        if (subOpcao === '0') {
+            continue;
+        }
+
+        const clienteId = readlineSync.question('Digite o ID do cliente para gerenciar: ');
+        const clienteIndex = clientes.findIndex(c => c.startsWith(`${clienteId};`));
+
+        if (clienteIndex === -1) {
+            console.log("\nErro: Cliente não encontrado com o ID informado.");
+        } else {
+            let clienteDados = clientes[clienteIndex].split(';');
+
+            switch (subOpcao) {
+                case '1':
+                    // Deleta o cliente do array
+                    clientes.splice(clienteIndex, 1);
+                    console.log("\nCadastro de cliente deletado com sucesso!");
+                    break;
+                case '2':
+                    // Muda o status do cliente para '0' (banido)
+                    clienteDados[5] = '0';
+                    clientes[clienteIndex] = clienteDados.join(';');
+                    console.log("\nCliente banido com sucesso!");
+                    break;
+                case '3':
+                    // Edita as informações do cliente
+                    console.log("\nDigite as novas informações para o cliente (deixe em branco para não alterar):");
+                    const novoNome = readlineSync.question(`Novo Nome (${clienteDados[1]}): `) || clienteDados[1];
+                    const novoTelefone = readlineSync.question(`Novo Telefone (${clienteDados[2]}): `) || clienteDados[2];
+                    const novoEndereco = readlineSync.question(`Novo Endereco (${clienteDados[3]}): `) || clienteDados[3];
+                    const novoCpf = readlineSync.question(`Novo CPF (${clienteDados[4]}): `) || clienteDados[4];
+                    
+                    // Reconstroi a linha com as novas informações, mantendo o ID e o status
+                    clientes[clienteIndex] = `${clienteDados[0]};${novoNome};${novoTelefone};${novoEndereco};${novoCpf};${clienteDados[5]}`;
+                    console.log("\nInformações do cliente editadas com sucesso!");
+                    break;
+                default:
+                    console.log("\nOpção inválida.");
+                    break;
+            }
+            // Salva as alterações no arquivo, sobrescrevendo o conteúdo antigo
+            fs.writeFileSync(fileName, clientes.join('\n') + '\n', 'utf-8');
+        }
     }
+    
     if (opmenu === "7"){
         // Se o usuário digitar '7', o loop principal é interrompido e o programa termina.
         break;
