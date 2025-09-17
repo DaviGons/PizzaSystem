@@ -73,7 +73,7 @@ while (true) {
 
         const sabor: string = readlineSync.question('Sabor: ');
         const ingredientes: string = readlineSync.question('Ingredientes: ');
-        const preco: string = readlineSync.question('Preço: ');
+        const preco: number = readlineSync.questionFloat('Preço: ');
         const id = gerarProximoId(fileName, 2);
         const dadosPizza = `${id};${sabor};${ingredientes};${preco};\n`;
         fs.appendFileSync(fileName, dadosPizza, 'utf-8');
