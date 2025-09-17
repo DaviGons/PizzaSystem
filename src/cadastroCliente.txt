@@ -3,3 +3,4 @@
 003;Anakin Skywalker;1199879-9872;112.233.445-56;Rua Mustafar, 11
 004;Carlos Alberto;11993403-4452;678.901.234-56;Rua Dr. Cliberto Klisd, 665
 005;Fabiano Rotundo da Silva;1199700-7172;345.678.901-23;Rua Futura, 76006;das;da;asd;da
+006;davi;3912;afso;1499219192
