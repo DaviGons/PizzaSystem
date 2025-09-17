@@ -111,7 +111,10 @@ while (true) {
         } else {
             const precoUnitario = parseFloat(pizza.split(';')[3]);
             const valorTotal = (precoUnitario * quantidade).toFixed(2);
-            const dataPedido = new Date().toLocaleString();
+            const data = new Date();
+            const dataFormatada = `${data.getDate().toString().padStart(2, '0')}/${(data.getMonth() + 1).toString().padStart(2, '0')}/${data.getFullYear()}`;
+            const horaFormatada = `${data.getHours().toString().padStart(2, '0')}:${data.getMinutes().toString().padStart(2, '0')}:${data.getSeconds().toString().padStart(2, '0')}`;
+            const dataPedido = `${dataFormatada} ${horaFormatada}`;
             const idPedido = gerarProximoId("pedidos.txt", 4);
             const dadosPedido = `${idPedido};${clienteId};${pizzaId};${quantidade};${valorTotal};${dataPedido}\n`;
             fs.appendFileSync("pedidos.txt", dadosPedido, 'utf-8');
@@ -122,7 +125,58 @@ while (true) {
     }
     
     if (opmenu === "4"){
+                clearConsole();
+        console.log("\n=====================================================");
+        console.log("             RELATÓRIO DE PEDIDOS DO DIA");
+        console.log("=====================================================");
+
+        const pedidos = getLines("pedidos.txt");
+        const clientes = getLines("cadastroCliente.txt");
+        const cardapio = getLines("cardapio.txt");
+
+        const data = new Date();
+const dataAtual = `${data.getDate().toString().padStart(2, '0')}/${(data.getMonth() + 1).toString().padStart(2, '0')}/${data.getFullYear()}`;
+
+        const pedidosDoDia = pedidos.filter(pedido => {
+            const dadosPedido = pedido.split(';');
+            const dataPedido = dadosPedido[5].split(' ')[0]; 
+            return dataPedido === dataAtual;
+        });
+
+        let totalDiario = 0;
+
+        if (pedidosDoDia.length === 0) {
+            console.log("Nenhum pedido encontrado para a data de hoje.");
+        } else {
+            pedidosDoDia.forEach(pedido => {
+                const [idPedido, idCliente, idPizza, quantidade, valorTotal, data] = pedido.split(';');
+
+                const cliente = clientes.find(c => c.startsWith(`${idCliente};`));
+                const pizza = cardapio.find(p => p.startsWith(`${idPizza};`));
+
+                const nomeCliente = cliente ? cliente.split(';')[1] : 'Cliente não encontrado';
+                const saborPizza = pizza ? pizza.split(';')[1] : 'Pizza não encontrada';
+
+                console.log(`\n-----------------------------------------------------`);
+                console.log(`Pedido ID: ${idPedido}`);
+                console.log(`Cliente: ${nomeCliente} (ID: ${idCliente})`);
+                console.log(`Pizza: ${saborPizza} (ID: ${idPizza})`);
+                console.log(`Quantidade: ${quantidade}`);
+                console.log(`Valor Total: R$ ${valorTotal}`);
+                console.log(`Data/Hora: ${data}`);
+                totalDiario += parseFloat(valorTotal);
+            });
+            console.log(`\n=====================================================`);
+            console.log(`Total de vendas do dia: R$ ${totalDiario.toFixed(2)}`);
+        }
+
+        console.log("=====================================================\n");
         
+        if (pedidosDoDia.length > 0) {
+            readlineSync.question('Relatório gerado. Pressione Enter para limpar os pedidos do dia...');
+            fs.writeFileSync("pedidos.txt", '', 'utf-8');
+            console.log('Pedidos do dia apagados com sucesso!');
+        }
     }
     if (opmenu === "5"){
         
