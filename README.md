@@ -1,7 +1,11 @@
 # SISTEMA PIZZASYSTEM
 
 Este projeto foi desenvolvido como parte dos estudos de Programação Orientada a Objetos no segundo semestre de Ciência da Computação. O objetivo é criar um sistema de gerenciamento de pizzaria simples, rodando no console, para praticar conceitos de manipulação de dados, estruturas de controle e interações com o usuário via terminal.
-
+    
+    ALUNOS:
+    
+    GUSTAVO ZAIA PASTRO (RA 2506964)
+    DAVI GONÇALVES SILVA (RA 2505783)
 -----
 
 ## Visão Geral
@@ -31,40 +35,17 @@ O sistema é operado através de um menu principal e submenus, com as seguintes 
 Para rodar este sistema, você precisa ter o *Node.js* instalado em sua máquina. O Node.js já vem com o npm, o gerenciador de pacotes.
 
 1.  *Clone o Repositório:*
-    bash
+    ```bash
     git clone https://github.com/DaviGons/PizzaSystem.git
     cd PizzaSystem
     
 2.  *Instale as Dependências:*
-    bash
+    ```bash
     npm install
     
-3.  *Crie os Arquivos de Dados:* Crie os seguintes arquivos de texto vazios na raiz do projeto, caso eles ainda não existam:
-      * cadastroCliente.txt
-      * cardapio.txt
-      * pedidos.txt
-4.  *Inicie o Sistema:*
-    bash
+3.  *Inicie o Sistema:*
+    ```bash
     npx tsc
     node dist/index.js
     
-    (Note: dependendo da sua configuração, o nome do arquivo de entrada pode ser index.ts ou sistema_pizzaria.ts.)
-
 -----
-
-## Estrutura do Projeto
-
-A estrutura de diretórios do projeto é bastante simples e segue o padrão de desenvolvimento com TypeScript:
-
-
-PizzaSystem/
-├── node_modules/         (Dependências do Node)
-├── src/                  (Código-fonte em TypeScript)
-│   └── index.ts          (Ou sistema_pizzaria.ts)
-├── dist/                 (Arquivos JavaScript compilados)
-│   └── index.js
-├── cadastroCliente.txt   (Dados de clientes)
-├── cardapio.txt          (Dados de pizzas)
-├── pedidos.txt           (Dados de pedidos)
-├── package.json          (Gerenciamento de pacotes)
-└── tsconfig.json         (Configuração do TypeScript)
