@@ -75,6 +75,31 @@ const exibirCardapio = (cardapio: string[]) => {
 };
 
 // =========================================================================================
+// FUNÇÃO PARA GERAR COMPROVANTE
+// =========================================================================================
+
+// Cria um comprovante de pedido formatado para ser exibido no console.
+const gerarComprovante = (
+  clienteNome: string,
+  saborPizza: string,
+  quantidade: number,
+  valorTotal: string,
+  formaPagamento: string,
+  dataHora: string
+) => {
+    console.log("\n=====================================================");
+    console.log("            COMPROVANTE DE PEDIDO");
+    console.log("-----------------------------------------------------");
+    console.log(`Cliente: ${clienteNome}`);
+    console.log(`Pizza: ${saborPizza}`);
+    console.log(`Quantidade: ${quantidade}`);
+    console.log(`Forma de Pagamento: ${formaPagamento}`);
+    console.log(`Valor Total: R$ ${valorTotal}`);
+    console.log(`Data e Hora: ${dataHora}`);
+    console.log("=====================================================");
+};
+
+// =========================================================================================
 // FIM DAS FUNÇÕES
 // =========================================================================================
 
@@ -90,7 +115,7 @@ while (true) {
     console.log("[1] Cadastro de Cliente");
     console.log("[2] Cadastro de Produtos");
     console.log("[3] Gerar pedido");
-    console.log("[4] Gerar relatório do dia");
+    console.log("[4] Relatórios");
     console.log("[5] Gerenciar Cardápio");
     console.log("[6] Gerenciar Cadastros");
     console.log("[7] Fechar Sistema");
@@ -181,6 +206,20 @@ while (true) {
             // Verificamos se a pizza está disponível.
             console.log("\nErro: A pizza selecionada está indisponível.");
         } else {
+            // Pedimos a forma de pagamento
+            console.log("\nFormas de Pagamento:");
+            console.log("[1] Pix");
+            console.log("[2] Cartão (Débito/Crédito)");
+            console.log("[3] Dinheiro");
+            const formaPagamentoOpcao = readlineSync.question('Digite a forma de pagamento: ');
+            let formaPagamento = '';
+            switch (formaPagamentoOpcao) {
+                case '1': formaPagamento = 'Pix'; break;
+                case '2': formaPagamento = 'Cartão'; break;
+                case '3': formaPagamento = 'Dinheiro'; break;
+                default: formaPagamento = 'Não Informado'; break;
+            }
+
             // Se tudo estiver certo, pegamos o preço e calculamos o valor total.
             const precoUnitario = parseFloat(pizza.split(';')[3]);
             const valorTotal = (precoUnitario * quantidade).toFixed(2);
@@ -192,76 +231,144 @@ while (true) {
             const dataPedido = `${dataFormatada} ${horaFormatada}`;
             // Geramos o ID para o pedido e salvamos os dados.
             const idPedido = gerarProximoId("pedidos.txt", 4);
-            const dadosPedido = `${idPedido};${clienteId};${pizzaId};${quantidade};${valorTotal};${dataPedido}\n`;
+            const dadosPedido = `${idPedido};${clienteId};${pizzaId};${quantidade};${valorTotal};${dataPedido};${formaPagamento}\n`;
             fs.appendFileSync("pedidos.txt", dadosPedido, 'utf-8');
+
             console.log("\nPedido gerado com sucesso!");
             console.log(`ID do Pedido: ${idPedido}`);
-            console.log(`Valor Total: R$ ${valorTotal}`);
+            // GERA O COMPROVANTE
+            const clienteDados = cliente.split(';');
+            const pizzaDados = pizza.split(';');
+            gerarComprovante(clienteDados[1], pizzaDados[1], quantidade, valorTotal, formaPagamento, dataPedido);
         }
     }
     
-    // === OPÇÃO [4] RELATÓRIO DO DIA ===
+    // === OPÇÃO [4] RELATÓRIOS ===
     // 'if' para quando a opção de menu for '4'.
     if (opmenu === "4"){
         clearConsole();
-        console.log("\n=====================================================");
-        console.log("             RELATÓRIO DE PEDIDOS DO DIA");
-        console.log("=====================================================");
-        // Lemos todos os dados de clientes, pedidos e cardápio.
-        const pedidos = getLines("pedidos.txt");
-        const clientes = getLines("cadastroCliente.txt");
-        const cardapio = getLines("cardapio.txt");
-        // Pegamos a data atual pra comparar com a data dos pedidos.
-        const data = new Date();
-        const dataAtual = `${data.getDate().toString().padStart(2, '0')}/${(data.getMonth() + 1).toString().padStart(2, '0')}/${data.getFullYear()}`;
-        // Filtramos a lista de pedidos pra pegar só os do dia de hoje.
-        const pedidosDoDia = pedidos.filter(pedido => {
-            const dadosPedido = pedido.split(';');
-            const dataPedido = dadosPedido[5].split(' ')[0]; 
-            return dataPedido === dataAtual;
-        });
+        while (true) {
+            console.log("\n=====================================================");
+            console.log("             MENU DE RELATÓRIOS");
+            console.log("=====================================================");
+            console.log("[1] Relatório Diário");
+            console.log("[2] Relatório Mensal");
+            console.log("[0] Voltar ao menu principal");
+            console.log("=====================================================\n");
+            const subOpcaoRelatorio = readlineSync.question("Digite a opção desejada: ");
 
-        let totalDiario = 0;
-        // Se não houver pedidos no dia, mostra uma mensagem.
-        if (pedidosDoDia.length === 0) {
-            console.log("Nenhum pedido encontrado para a data de hoje.");
-        } else {
-            // Percorre cada pedido do dia pra exibir os detalhes.
-            pedidosDoDia.forEach(pedido => {
-                const [idPedido, idCliente, idPizza, quantidade, valorTotal, data] = pedido.split(';');
-                // Usa 'find()' pra buscar os dados do cliente e da pizza.
-                const cliente = clientes.find(c => c.startsWith(`${idCliente};`));
-                const pizza = cardapio.find(p => p.startsWith(`${idPizza};`));
-                // Pega os nomes ou exibe uma mensagem de erro.
-                const nomeCliente = cliente ? cliente.split(';')[1] : 'Cliente não encontrado';
-                const saborPizza = pizza ? pizza.split(';')[1] : 'Pizza não encontrada';
-                // Exibe os dados do pedido.
-                console.log(`\n-----------------------------------------------------`);
-                console.log(`Pedido ID: ${idPedido}`);
-                console.log(`Cliente: ${nomeCliente} (ID: ${idCliente})`);
-                console.log(`Pizza: ${saborPizza} (ID: ${idPizza})`);
-                console.log(`Quantidade: ${quantidade}`);
-                console.log(`Valor Total: R$ ${valorTotal}`);
-                console.log(`Data/Hora: ${data}`);
-                // Soma o valor do pedido ao total do dia.
-                totalDiario += parseFloat(valorTotal);
-            });
-            // Exibe o total de vendas do dia formatado.
-            console.log(`\n=====================================================`);
-            console.log(`Total de vendas do dia: R$ ${totalDiario.toFixed(2)}`);
-        }
+            clearConsole();
 
-        console.log("=====================================================\n");
-        
-        // Se houver pedidos, dá a opção de apagar o arquivo do dia pra começar de novo amanhã.
-        if (pedidosDoDia.length > 0) {
-            readlineSync.question('Relatório gerado. Pressione Enter para limpar os pedidos do dia...');
-            // Limpa o conteúdo do arquivo 'pedidos.txt'.
-            fs.writeFileSync("pedidos.txt", '', 'utf-8');
-            console.log('Pedidos do dia apagados com sucesso!');
+            if (subOpcaoRelatorio === '1') {
+                console.log("\n=====================================================");
+                console.log("         RELATÓRIO DE PEDIDOS DO DIA");
+                console.log("=====================================================");
+                
+                // Lemos todos os dados de clientes, pedidos e cardápio.
+                const pedidos = getLines("pedidos.txt");
+                const clientes = getLines("cadastroCliente.txt");
+                const cardapio = getLines("cardapio.txt");
+                
+                // Pegamos a data atual pra comparar com a data dos pedidos.
+                const data = new Date();
+                const dataAtual = `${data.getDate().toString().padStart(2, '0')}/${(data.getMonth() + 1).toString().padStart(2, '0')}/${data.getFullYear()}`;
+                
+                // Filtramos a lista de pedidos pra pegar só os do dia de hoje.
+                const pedidosDoDia = pedidos.filter(pedido => {
+                    const dadosPedido = pedido.split(';');
+                    const dataPedido = dadosPedido[5].split(' ')[0]; 
+                    return dataPedido === dataAtual;
+                });
+                
+                let totalDiario = 0;
+                // Se não houver pedidos no dia, mostra uma mensagem.
+                if (pedidosDoDia.length === 0) {
+                    console.log("Nenhum pedido encontrado para a data de hoje.");
+                } else {
+                    // Percorre cada pedido do dia pra exibir os detalhes.
+                    pedidosDoDia.forEach(pedido => {
+                        const [idPedido, idCliente, idPizza, quantidade, valorTotal, data, formaPagamento] = pedido.split(';');
+                        // Usa 'find()' pra buscar os dados do cliente e da pizza.
+                        const cliente = clientes.find(c => c.startsWith(`${idCliente};`));
+                        const pizza = cardapio.find(p => p.startsWith(`${idPizza};`));
+                        // Pega os nomes ou exibe uma mensagem de erro.
+                        const nomeCliente = cliente ? cliente.split(';')[1] : 'Cliente não encontrado';
+                        const saborPizza = pizza ? pizza.split(';')[1] : 'Pizza não encontrada';
+                        // Exibe os dados do pedido.
+                        console.log(`\n-----------------------------------------------------`);
+                        console.log(`Pedido ID: ${idPedido}`);
+                        console.log(`Cliente: ${nomeCliente} (ID: ${idCliente})`);
+                        console.log(`Pizza: ${saborPizza} (ID: ${idPizza})`);
+                        console.log(`Quantidade: ${quantidade}`);
+                        console.log(`Valor Total: R$ ${valorTotal}`);
+                        console.log(`Forma de Pagamento: ${formaPagamento}`);
+                        console.log(`Data/Hora: ${data}`);
+                        // Soma o valor do pedido ao total do dia.
+                        totalDiario += parseFloat(valorTotal);
+                    });
+                    // Exibe o total de vendas do dia formatado.
+                    console.log(`\n=====================================================`);
+                    console.log(`Total de vendas do dia: R$ ${totalDiario.toFixed(2)}`);
+                }
+
+                console.log("=====================================================\n");
+            } else if (subOpcaoRelatorio === '2') {
+                console.log("\n=====================================================");
+                console.log("         RELATÓRIO DE PEDIDOS DO MÊS");
+                console.log("=====================================================");
+                
+                const pedidos = getLines("pedidos.txt");
+                const clientes = getLines("cadastroCliente.txt");
+                const cardapio = getLines("cardapio.txt");
+                
+                const data = new Date();
+                const mesAtual = (data.getMonth() + 1).toString().padStart(2, '0');
+                
+                const pedidosDoMes = pedidos.filter(pedido => {
+                    const dadosPedido = pedido.split(';');
+                    const dataPedido = dadosPedido[5].split(' ')[0];
+                    return dataPedido.split('/')[1] === mesAtual;
+                });
+                
+                let totalMensal = 0;
+                
+                if (pedidosDoMes.length === 0) {
+                    console.log("Nenhum pedido encontrado para o mês atual.");
+                } else {
+                    pedidosDoMes.forEach(pedido => {
+                        const [idPedido, idCliente, idPizza, quantidade, valorTotal, data, formaPagamento] = pedido.split(';');
+                        const cliente = clientes.find(c => c.startsWith(`${idCliente};`));
+                        const pizza = cardapio.find(p => p.startsWith(`${idPizza};`));
+                        const nomeCliente = cliente ? cliente.split(';')[1] : 'Cliente não encontrado';
+                        const saborPizza = pizza ? pizza.split(';')[1] : 'Pizza não encontrada';
+                        
+                        console.log(`\n-----------------------------------------------------`);
+                        console.log(`Pedido ID: ${idPedido}`);
+                        console.log(`Cliente: ${nomeCliente} (ID: ${idCliente})`);
+                        console.log(`Pizza: ${saborPizza} (ID: ${idPizza})`);
+                        console.log(`Quantidade: ${quantidade}`);
+                        console.log(`Valor Total: R$ ${valorTotal}`);
+                        console.log(`Forma de Pagamento: ${formaPagamento}`);
+                        console.log(`Data/Hora: ${data}`);
+                        totalMensal += parseFloat(valorTotal);
+                    });
+                    console.log(`\n=====================================================`);
+                    console.log(`Total de vendas do mês: R$ ${totalMensal.toFixed(2)}`);
+                }
+
+                console.log("=====================================================\n");
+            } else if (subOpcaoRelatorio === '0') {
+                break; // Sai do sub-menu de relatórios
+            } else {
+                console.log("\nOpção inválida.");
+            }
+            
+            if (subOpcaoRelatorio !== '0') {
+                readlineSync.question('Pressione Enter para continuar...');
+            }
         }
     }
-
+    
     // === OPÇÃO [5] GERENCIAR CARDÁPIO ===
     // Lógica para gerenciar as pizzas do cardápio (deletar ou mudar status)
     if (opmenu === "5"){
