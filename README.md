@@ -1,6 +1,6 @@
 # SISTEMA PIZZASYSTEM
 
-Este projeto foi desenvolvido como parte dos estudos de Programação Orientada a Objetos no segundo semestre de Ciência da Computação. O objetivo é criar um sistema de gerenciamento de pizzaria simples, rodando no console, para praticar conceitos de manipulação de dados, estruturas de controle e interações com o usuário via terminal.
+Este projeto foi desenvolvido como parte dos estudos de Programação TypeScript no segundo semestre de Ciência da Computação. O objetivo é criar um sistema de gerenciamento de pizzaria simples, rodando no console, para praticar conceitos de manipulação de dados, estruturas de controle e interações com o usuário via terminal.
     
     ALUNOS:
     
