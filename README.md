@@ -62,3 +62,9 @@ Depois de instalar as dependências, siga os passos abaixo para iniciar o projet
     node dist/index.js
     
 -----
+
+## Fluxograma do Sistema
+
+A imagem abaixo representa o fluxo lógico do Pizzasystem, desde o menu principal até as funcionalidades de cada opção.
+
+![image_alt](https://github.com/DaviGons/PizzaSystem/blob/3d81666e8d44812cdaf21d5313618a1e6a8469f7/fluxo.jpg)
