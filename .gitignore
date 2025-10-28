@@ -1,0 +1,53 @@
+# =================================================================
+# 1. Dependências
+# Ignora a pasta que contém todos os pacotes baixados
+# =================================================================
+node_modules/
+
+
+# =================================================================
+# 2. Build / Código Compilado
+# Ignora o resultado da compilação do TypeScript
+# =================================================================
+dist/
+build/
+.tsbuildinfo
+
+
+# =================================================================
+# 3. Arquivos de Dados (Runtime)
+# Ignora os arquivos .txt que funcionam como banco de dados.
+# O seu código .ts os cria na raiz do projeto quando executado.
+# Os arquivos originais dentro de /src/ serão mantidos.
+# =================================================================
+cadastroCliente.txt
+cardapio.txt
+outrosProdutos.txt
+pedidos.txt
+
+
+# =================================================================
+# 4. Logs e Arquivos de Ambiente
+# =================================================================
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Arquivos de variáveis de ambiente (contêm segredos)
+.env
+.env.*
+!.env.example
+
+
+# =================================================================
+# 5. Arquivos de Sistema Operacional e IDE
+# =================================================================
+# macOS
+.DS_Store
+
+# Windows
+Thumbs.db
+
+# VSCode
+.vscode/

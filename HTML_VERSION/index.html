@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PizzaSystem UI</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <header>
+        <h1>SISTEMA DE PIZZARIA PIZZASYSTEM</h1>
+    </header>
+
+    <nav>
+        <button class="nav-btn" data-view="view-main-menu">Início</button>
+        <button class="nav-btn" data-view="view-cadastro-cliente">Cadastro de Cliente</button>
+        <button class="nav-btn" data-view="view-cadastro-produto">Cadastro de Produtos</button>
+        <button class="nav-btn" data-view="view-gerar-pedido">Gerar Pedido</button>
+        <button class="nav-btn" data-view="view-relatorios">Relatórios</button>
+        <button class="nav-btn" data-view="view-gerenciar-cardapio">Gerenciar Cardápio</button>
+        <button class="nav-btn" data-view="view-gerenciar-cadastros">Gerenciar Cadastros</button>
+    </nav>
+
+    <main>
+        <div id="message-area"></div>
+
+        <div id="view-main-menu" class="view">
+            <h2>Bem-vindo ao PizzaSystem</h2>
+            <p>Selecione uma opção no menu acima para começar.</p>
+            <div class="disclaimer">
+                <strong>Nota:</strong> Este é um sistema de demonstração. Todos os dados são salvos
+                no <strong>LocalStorage</strong> do seu navegador, não em arquivos no servidor.
+                Os dados persistirão se você fechar a aba, mas não serão compartilhados.
+            </div>
+            <br>
+            <button id="btn-limpar-dados" class="btn-aviso">Limpar Todos os Dados Salvos</button>
+        </div>
+
+        <div id="view-cadastro-cliente" class="view">
+            <h2>[1] Cadastro de Cliente</h2>
+            <form id="form-add-cliente">
+                <div class="form-grupo">
+                    <label for="cliente-nome">Nome:</label>
+                    <input type="text" id="cliente-nome" required>
+                </div>
+                <div class="form-grupo">
+                    <label for="cliente-telefone">Telefone:</label>
+                    <input type="tel" id="cliente-telefone" required>
+                </div>
+                <div class="form-grupo">
+                    <label for="cliente-endereco">Endereço:</label>
+                    <input type="text" id="cliente-endereco">
+                </div>
+                <div class="form-grupo">
+                    <label for="cliente-cpf">CPF:</label>
+                    <input type="text" id="cliente-cpf">
+                </div>
+                <button type="submit" class="btn-principal">Cadastrar Cliente</button>
+            </form>
+        </div>
+        
+        <div id="view-gerenciar-cadastros" class="view">
+            <h2>[6] Gerenciar Cadastros de Clientes</h2>
+            
+            <form id="form-edit-cliente" class="hidden">
+                <h3>Editando Cliente</h3>
+                <input type="hidden" id="edit-cliente-id">
+                <div class="form-grupo">
+                    <label for="edit-cliente-nome">Nome:</label>
+                    <input type="text" id="edit-cliente-nome" required>
+                </div>
+                <div class="form-grupo">
+                    <label for="edit-cliente-telefone">Telefone:</label>
+                    <input type="tel" id="edit-cliente-telefone" required>
+                </div>
+                <div class="form-grupo">
+                    <label for="edit-cliente-endereco">Endereço:</label>
+                    <input type="text" id="edit-cliente-endereco">
+                </div>
+                <div class="form-grupo">
+                    <label for="edit-cliente-cpf">CPF:</label>
+                    <input type="text" id="edit-cliente-cpf">
+                </div>
+                <button type="submit" class="btn-sucesso">Salvar Alterações</button>
+                <button type="button" id="btn-cancelar-edicao-cliente" class="btn-secundario">Cancelar</button>
+            </form>
+
+            <h3>Clientes Cadastrados</h3>
+            <div style="overflow-x:auto;">
+                <table id="table-gerenciar-clientes">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Nome</th>
+                            <th>Telefone</th>
+                            <th>Status</th>
+                            <th>Ações</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        </tbody>
+                </table>
+            </div>
+        </div>
+        
+        <div id="view-cadastro-produto" class="view">
+            <h2>[2] Cadastro de Produtos</h2>
+
+            <form id="form-add-pizza">
+                <h3>Cadastrar Nova Pizza</h3>
+                <div class="form-grupo">
+                    <label for="pizza-sabor">Sabor:</label>
+                    <input type="text" id="pizza-sabor" required>
+                </div>
+                <div class="form-grupo">
+                    <label for="pizza-ingredientes">Ingredientes:</label>
+                    <textarea id="pizza-ingredientes" required></textarea>
+                </div>
+                <div class="form-grupo">
+                    <label for="pizza-preco">Preço (R$):</label>
+                    <input type="number" step="0.01" id="pizza-preco" required>
+                </div>
+                <button type="submit" class="btn-principal">Cadastrar Pizza</button>
+            </form>
+
+            <hr style="margin: 30px 0;">
+
+            <form id="form-add-outro">
+                <h3>Cadastrar Outros Produtos (Bebidas, etc.)</h3>
+                <div class="form-grupo">
+                    <label for="outro-nome">Nome do Produto:</label>
+                    <input type="text" id="outro-nome" required>
+                </div>
+                <div class="form-grupo">
+                    <label for="outro-preco">Preço (R$):</label>
+                    <input type="number" step="0.01" id="outro-preco" required>
+                </div>
+                <button type="submit" class="btn-principal">Cadastrar Outro Produto</button>
+            </form>
+        </div>
+
+        <div id="view-gerenciar-cardapio" class="view">
+            <h2>[5] Gerenciar Cardápio</h2>
+            
+            <h3>Gerenciar Pizzas</h3>
+            <div style="overflow-x:auto;">
+                <table id="table-gerenciar-pizzas">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Sabor</th>
+                            <th>Preço</th>
+                            <th>Status</th>
+                            <th>Ações</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        </tbody>
+                </table>
+            </div>
+
+            <h3 style="margin-top: 30px;">Gerenciar Outros Produtos</h3>
+            <div style="overflow-x:auto;">
+                <table id="table-gerenciar-outros">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Nome</th>
+                            <th>Preço</th>
+                            <th>Status</th>
+                            <th>Ações</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div id="view-gerar-pedido" class="view">
+            <h2>[3] Gerar Pedido</h2>
+            <form id="form-gerar-pedido">
+                <div class="form-grupo">
+                    <label for="pedido-cliente">Selecione o Cliente:</label>
+                    <select id="pedido-cliente" required>
+                        <option value="">-- Carregando clientes... --</option>
+                    </select>
+                </div>
+                
+                <hr>
+                <h3>Itens do Pedido</h3>
+                
+                <div class="form-grupo">
+                    <label for="pedido-pizza">Selecione a Pizza:</label>
+                    <select id="pedido-pizza" required>
+                        <option value="">-- Carregando cardápio... --</option>
+                    </select>
+                </div>
+                <div class="form-grupo">
+                    <label for="pedido-qtd-pizza">Quantidade (Pizza):</label>
+                    <input type="number" id="pedido-qtd-pizza" value="1" min="1" required>
+                </div>
+
+                <div class="form-grupo">
+                    <input type="checkbox" id="pedido-add-outro" style="width: auto;">
+                    <label for="pedido-add-outro" style="display: inline-block;">Adicionar bebida ou outro item?</label>
+                </div>
+                
+                <div id="pedido-outro-grupo" class="hidden">
+                    <div class="form-grupo">
+                        <label for="pedido-outro">Selecione o Produto Extra:</label>
+                        <select id="pedido-outro">
+                            <option value="">-- Carregando outros produtos... --</option>
+                        </select>
+                    </div>
+                    <div class="form-grupo">
+                        <label for="pedido-qtd-outro">Quantidade (Extra):</label>
+                        <input type="number" id="pedido-qtd-outro" value="1" min="1">
+                    </div>
+                </div>
+
+                <hr>
+                <h3>Pagamento</h3>
+                <div class="form-grupo">
+                    <label for="pedido-pagamento">Forma de Pagamento:</label>
+                    <select id="pedido-pagamento" required>
+                        <option value="">Selecione...</option>
+                        <option value="Pix">Pix</option>
+                        <option value="Cartão">Cartão (Débito/Crédito)</option>
+                        <option value="Dinheiro">Dinheiro</option>
+                    </select>
+                </div>
+
+                <h3 id="pedido-valor-total" style="text-align: right;">Valor Total: R$ 0.00</h3>
+                
+                <button type="submit" class="btn-principal">Finalizar Pedido</button>
+            </form>
+
+            <div id="pedido-comprovante-area" class="hidden">
+                </div>
+        </div>
+        
+        <div id="view-relatorios" class="view">
+            <h2>[4] Relatórios</h2>
+            <div style="display: flex; gap: 10px; margin-bottom: 20px;">
+                <button id="btn-relatorio-diario" class="btn-principal">Relatório Diário</button>
+                <button id="btn-relatorio-mensal" class="btn-secundario">Relatório Mensal</button>
+            </div>
+            
+            <div id="output-relatorios">
+                </div>
+        </div>
+
+    </main>
+
+    <script src="script.js"></script>
+</body>
+</html>

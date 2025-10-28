@@ -19,7 +19,8 @@
   },
   "homepage": "https://github.com/DaviGons/PizzaSystem#readme",
   "dependencies": {
-    "readline-sync": "^1.4.10"
+    "readline-sync": "^1.4.10",
+    "typescript": "^5.9.3"
   },
   "devDependencies": {
     "@types/node": "^24.5.1",
