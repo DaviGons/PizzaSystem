@@ -6,31 +6,24 @@
     <title>PizzaSystem</title>
     
     <style>
-        /* ===================================================================== */
-        /* 1. VARIÁVEIS DE DESIGN (Paleta Neutra)                                */
-        /* ===================================================================== */
         :root {
-            /* Cores */
-            --cor-fundo: #f8f9fa;       /* Cinza muito claro (fundo do corpo) */
-            --cor-surface: #ffffff;     /* Branco (fundo dos cards, nav) */
-            --cor-primaria: #212529;    /* Cinza quase preto (botões principais, texto) */
-            --cor-primaria-hover: #495057; /* Cinza médio-escuro (hover) */
-            --cor-texto: #343a40;       /* Texto principal (um pouco mais suave que o preto) */
-            --cor-texto-secundario: #6c757d; /* Cinza para labels e texto de apoio */
-            --cor-borda: #e9ecef;       /* Borda sutil */
+            --cor-fundo: #f8f9fa;       
+            --cor-surface: #ffffff;     
+            --cor-primaria: #212529;    
+            --cor-primaria-hover: #495057; 
+            --cor-texto: #343a40;       
+            --cor-texto-secundario: #6c757d; 
+            --cor-borda: #e9ecef;
             
-            /* Cores funcionais (mantidas para clareza) */
+     
             --cor-sucesso: #28a745;
             --cor-aviso: #dc3545;
 
-            /* Design */
-            --raio-borda: 6px; /* Raio de borda consistente */
-            --transicao-suave: all 0.3s ease; /* Animação padrão */
+    
+            --raio-borda: 6px; 
+            --transicao-suave: all 0.3s ease; 
         }
 
-        /* ===================================================================== */
-        /* 2. ESTILOS GERAIS (Base e Tipografia)                                 */
-        /* ===================================================================== */
         body {
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
             background-color: var(--cor-fundo);
@@ -47,12 +40,12 @@
             flex: 1;
             padding: 20px;
             max-width: 900px;
-            margin: 30px auto; /* Mais espaço do topo */
+            margin: 30px auto; 
             width: 100%;
             box-sizing: border-box;
         }
 
-        /* Títulos */
+        
         h1, h2, h3 {
             font-weight: 600;
             margin-bottom: 1rem;
@@ -68,10 +61,6 @@
             border-top: 1px solid var(--cor-borda);
             margin: 30px 0;
         }
-
-        /* ===================================================================== */
-        /* 3. LAYOUT (Header, Nav, Views)                                        */
-        /* ===================================================================== */
         header {
             background-color: var(--cor-surface);
             color: var(--cor-primaria);
@@ -98,11 +87,11 @@
         nav button {
             background-color: transparent;
             border: none;
-            border-bottom: 2px solid transparent; /* Fica transparente por padrão */
+            border-bottom: 2px solid transparent;
             color: var(--cor-texto-secundario);
             padding: 12px 18px;
             margin: 0 2px;
-            border-radius: 0; /* Remove bordas para um look de "aba" */
+            border-radius: 0; 
             cursor: pointer;
             font-weight: 500;
             font-size: 0.95rem;
@@ -115,20 +104,20 @@
 
         nav button.active {
             color: var(--cor-primaria);
-            border-bottom: 2px solid var(--cor-primaria); /* Marca a aba ativa */
+            border-bottom: 2px solid var(--cor-primaria); 
         }
 
-        /* "Views" (os cards de conteúdo) */
+ 
         .view {
             display: none;
             background-color: var(--cor-surface);
             padding: 30px;
             border-radius: var(--raio-borda);
             border: 1px solid var(--cor-borda);
-            /* Removemos a sombra para um look mais "flat" */
+
         }
         
-        /* Modificação para este arquivo: a view inicial é a landing */
+
         #view-landing {
             display: block;
             text-align: center;
@@ -149,9 +138,6 @@
             margin-top: 25px;
         }
 
-        /* ===================================================================== */
-        /* 4. FORMULÁRIOS (Inputs, Botões, Labels)                               */
-        /* ===================================================================== */
         .form-grupo {
             margin-bottom: 1.2rem;
         }
@@ -177,7 +163,7 @@
             border-radius: var(--raio-borda);
             box-sizing: border-box;
             font-size: 1rem;
-            background-color: var(--cor-fundo); /* Input com leve contraste */
+            background-color: var(--cor-fundo);
             transition: var(--transicao-suave);
         }
 
@@ -186,7 +172,7 @@
             min-height: 80px;
         }
 
-        /* Efeito de Foco Suave */
+
         input[type="text"]:focus,
         input[type="tel"]:focus,
         input[type="number"]:focus,
@@ -197,10 +183,10 @@
             outline: none;
             border-color: var(--cor-primaria);
             background-color: var(--cor-surface);
-            box-shadow: 0 0 0 3px rgba(33, 37, 41, 0.05); /* Sombra de foco muito sutil */
+            box-shadow: 0 0 0 3px rgba(33, 37, 41, 0.05); 
         }
 
-        /* Botões */
+        
         button {
             font-family: inherit;
             font-size: 1rem;
@@ -250,11 +236,9 @@
             margin: 0 2px;
         }
 
-        /* ===================================================================== */
-        /* 5. COMPONENTES (Tabelas, Alertas, etc)                                */
-        /* ===================================================================== */
+    
 
-        /* Mensagens de Alerta */
+        
         .message-area {
             padding: 15px 20px;
             margin-bottom: 20px;
@@ -276,10 +260,10 @@
             display: block;
         }
 
-        /* Tabelas */
+
         div[style*="overflow-x:auto"] {
             border: 1px solid var(--cor-borda);
-            border-radius: var(--raio-borda); /* Aplicamos a borda no container */
+            border-radius: var(--raio-borda);
         }
 
         table {
@@ -303,7 +287,7 @@
             text-transform: uppercase;
         }
 
-        /* Remove a borda da última linha da tabela */
+
         table tr:last-child th,
         table tr:last-child td {
             border-bottom: none;
@@ -314,7 +298,7 @@
             white-space: nowrap;
         }
 
-        /* Comprovante */
+
         .comprovante {
             border: 1px solid var(--cor-borda);
             background-color: var(--cor-fundo);
@@ -328,7 +312,6 @@
             margin-top: 0;
         }
 
-        /* Disclaimer */
         .disclaimer {
             font-size: 0.9rem;
             color: #555;
@@ -1756,10 +1739,11 @@
 
         document.getElementById('btn-limpar-dados').addEventListener('click', limparDB);
         
-        // Seta a view inicial do admin para o menu principal
+    
         showView('view-main-menu');
     }
 
     </script>
 </body>
+
 </html>
