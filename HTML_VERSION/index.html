@@ -3,8 +3,346 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PizzaSystem UI</title>
-    <link rel="stylesheet" href="style.css">
+    <title>PizzaSystem</title>
+    
+    <style>
+        /* ===================================================================== */
+        /* 1. VARIÁVEIS DE DESIGN (Paleta Neutra)                                */
+        /* ===================================================================== */
+        :root {
+            /* Cores */
+            --cor-fundo: #f8f9fa;       /* Cinza muito claro (fundo do corpo) */
+            --cor-surface: #ffffff;     /* Branco (fundo dos cards, nav) */
+            --cor-primaria: #212529;    /* Cinza quase preto (botões principais, texto) */
+            --cor-primaria-hover: #495057; /* Cinza médio-escuro (hover) */
+            --cor-texto: #343a40;       /* Texto principal (um pouco mais suave que o preto) */
+            --cor-texto-secundario: #6c757d; /* Cinza para labels e texto de apoio */
+            --cor-borda: #e9ecef;       /* Borda sutil */
+            
+            /* Cores funcionais (mantidas para clareza) */
+            --cor-sucesso: #28a745;
+            --cor-aviso: #dc3545;
+
+            /* Design */
+            --raio-borda: 6px; /* Raio de borda consistente */
+            --transicao-suave: all 0.3s ease; /* Animação padrão */
+        }
+
+        /* ===================================================================== */
+        /* 2. ESTILOS GERAIS (Base e Tipografia)                                 */
+        /* ===================================================================== */
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--cor-fundo);
+            color: var(--cor-texto);
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            line-height: 1.6;
+        }
+
+        main {
+            flex: 1;
+            padding: 20px;
+            max-width: 900px;
+            margin: 30px auto; /* Mais espaço do topo */
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        /* Títulos */
+        h1, h2, h3 {
+            font-weight: 600;
+            margin-bottom: 1rem;
+            color: var(--cor-texto);
+        }
+
+        h1 { font-size: 1.6rem; }
+        h2 { font-size: 1.4rem; }
+        h3 { font-size: 1.2rem; }
+
+        hr {
+            border: 0;
+            border-top: 1px solid var(--cor-borda);
+            margin: 30px 0;
+        }
+
+        /* ===================================================================== */
+        /* 3. LAYOUT (Header, Nav, Views)                                        */
+        /* ===================================================================== */
+        header {
+            background-color: var(--cor-surface);
+            color: var(--cor-primaria);
+            padding: 15px 30px;
+            text-align: center;
+            border-bottom: 1px solid var(--cor-borda);
+        }
+
+        header h1 {
+            margin: 0;
+            font-size: 1.5rem;
+        }
+
+        nav {
+            background-color: var(--cor-surface);
+            border-bottom: 1px solid var(--cor-borda);
+            text-align: center;
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            padding: 5px 0;
+        }
+
+        nav button {
+            background-color: transparent;
+            border: none;
+            border-bottom: 2px solid transparent; /* Fica transparente por padrão */
+            color: var(--cor-texto-secundario);
+            padding: 12px 18px;
+            margin: 0 2px;
+            border-radius: 0; /* Remove bordas para um look de "aba" */
+            cursor: pointer;
+            font-weight: 500;
+            font-size: 0.95rem;
+            transition: var(--transicao-suave);
+        }
+
+        nav button:hover {
+            color: var(--cor-primaria);
+        }
+
+        nav button.active {
+            color: var(--cor-primaria);
+            border-bottom: 2px solid var(--cor-primaria); /* Marca a aba ativa */
+        }
+
+        /* "Views" (os cards de conteúdo) */
+        .view {
+            display: none;
+            background-color: var(--cor-surface);
+            padding: 30px;
+            border-radius: var(--raio-borda);
+            border: 1px solid var(--cor-borda);
+            /* Removemos a sombra para um look mais "flat" */
+        }
+        
+        /* Modificação para este arquivo: a view inicial é a landing */
+        #view-landing {
+            display: block;
+            text-align: center;
+        }
+
+        #view-main-menu {
+            display: block;
+            text-align: center;
+        }
+
+        .view h2 {
+            border-bottom: 1px solid var(--cor-borda);
+            padding-bottom: 10px;
+            margin-top: 0;
+        }
+
+        .view h3 {
+            margin-top: 25px;
+        }
+
+        /* ===================================================================== */
+        /* 4. FORMULÁRIOS (Inputs, Botões, Labels)                               */
+        /* ===================================================================== */
+        .form-grupo {
+            margin-bottom: 1.2rem;
+        }
+
+        .form-grupo label {
+            display: block;
+            margin-bottom: 6px;
+            font-weight: 500;
+            font-size: 0.9rem;
+            color: var(--cor-texto-secundario);
+        }
+
+        input[type="text"],
+        input[type="tel"],
+        input[type="number"],
+        input[type="float"],
+        input[type="password"],
+        textarea,
+        select {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid var(--cor-borda);
+            border-radius: var(--raio-borda);
+            box-sizing: border-box;
+            font-size: 1rem;
+            background-color: var(--cor-fundo); /* Input com leve contraste */
+            transition: var(--transicao-suave);
+        }
+
+        textarea {
+            resize: vertical;
+            min-height: 80px;
+        }
+
+        /* Efeito de Foco Suave */
+        input[type="text"]:focus,
+        input[type="tel"]:focus,
+        input[type="number"]:focus,
+        input[type="float"]:focus,
+        input[type="password"]:focus,
+        textarea:focus,
+        select:focus {
+            outline: none;
+            border-color: var(--cor-primaria);
+            background-color: var(--cor-surface);
+            box-shadow: 0 0 0 3px rgba(33, 37, 41, 0.05); /* Sombra de foco muito sutil */
+        }
+
+        /* Botões */
+        button {
+            font-family: inherit;
+            font-size: 1rem;
+            font-weight: 500;
+            padding: 12px 20px;
+            border: none;
+            border-radius: var(--raio-borda);
+            cursor: pointer;
+            transition: var(--transicao-suave);
+        }
+
+        button.btn-principal {
+            background-color: var(--cor-primaria);
+            color: white;
+        }
+        button.btn-principal:hover {
+            background-color: var(--cor-primaria-hover);
+        }
+
+        button.btn-secundario {
+            background-color: var(--cor-borda);
+            color: var(--cor-texto);
+        }
+        button.btn-secundario:hover {
+            background-color: #dee2e6;
+        }
+
+        button.btn-sucesso {
+            background-color: var(--cor-sucesso);
+            color: white;
+        }
+        button.btn-sucesso:hover {
+            opacity: 0.85;
+        }
+
+        button.btn-aviso {
+            background-color: var(--cor-aviso);
+            color: white;
+        }
+        button.btn-aviso:hover {
+            opacity: 0.85;
+        }
+
+        .btn-pequeno {
+            padding: 6px 12px;
+            font-size: 0.85rem;
+            margin: 0 2px;
+        }
+
+        /* ===================================================================== */
+        /* 5. COMPONENTES (Tabelas, Alertas, etc)                                */
+        /* ===================================================================== */
+
+        /* Mensagens de Alerta */
+        .message-area {
+            padding: 15px 20px;
+            margin-bottom: 20px;
+            border-radius: var(--raio-borda);
+            font-weight: 500;
+            text-align: center;
+            display: none;
+        }
+
+        .message-area.success {
+            background-color: #d1e7dd;
+            color: #0f5132;
+            display: block;
+        }
+
+        .message-area.error {
+            background-color: #f8d7da;
+            color: #842029;
+            display: block;
+        }
+
+        /* Tabelas */
+        div[style*="overflow-x:auto"] {
+            border: 1px solid var(--cor-borda);
+            border-radius: var(--raio-borda); /* Aplicamos a borda no container */
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 0;
+        }
+
+        table th, table td {
+            border-bottom: 1px solid var(--cor-borda);
+            padding: 12px 15px;
+            text-align: left;
+            vertical-align: middle;
+        }
+
+        table th {
+            background-color: var(--cor-fundo);
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: var(--cor-texto-secundario);
+            text-transform: uppercase;
+        }
+
+        /* Remove a borda da última linha da tabela */
+        table tr:last-child th,
+        table tr:last-child td {
+            border-bottom: none;
+        }
+
+        table td:last-child {
+            text-align: right;
+            white-space: nowrap;
+        }
+
+        /* Comprovante */
+        .comprovante {
+            border: 1px solid var(--cor-borda);
+            background-color: var(--cor-fundo);
+            padding: 25px;
+            margin-top: 25px;
+            border-radius: var(--raio-borda);
+        }
+
+        .comprovante h3 {
+            text-align: center;
+            margin-top: 0;
+        }
+
+        /* Disclaimer */
+        .disclaimer {
+            font-size: 0.9rem;
+            color: #555;
+            background-color: #fffbe6;
+            border: 1px solid #ffe58f;
+            padding: 15px;
+            border-radius: var(--raio-borda);
+            text-align: center;
+        }
+
+        .hidden {
+            display: none;
+        }
+    </style>
 </head>
 <body>
 
@@ -12,248 +350,1416 @@
         <h1>SISTEMA DE PIZZARIA PIZZASYSTEM</h1>
     </header>
 
-    <nav>
-        <button class="nav-btn" data-view="view-main-menu">Início</button>
-        <button class="nav-btn" data-view="view-cadastro-cliente">Cadastro de Cliente</button>
-        <button class="nav-btn" data-view="view-cadastro-produto">Cadastro de Produtos</button>
-        <button class="nav-btn" data-view="view-gerar-pedido">Gerar Pedido</button>
-        <button class="nav-btn" data-view="view-relatorios">Relatórios</button>
-        <button class="nav-btn" data-view="view-gerenciar-cardapio">Gerenciar Cardápio</button>
-        <button class="nav-btn" data-view="view-gerenciar-cadastros">Gerenciar Cadastros</button>
-    </nav>
+    <main id="app-root">
 
-    <main>
-        <div id="message-area"></div>
-
-        <div id="view-main-menu" class="view">
-            <h2>Bem-vindo ao PizzaSystem</h2>
-            <p>Selecione uma opção no menu acima para começar.</p>
-            <div class="disclaimer">
-                <strong>Nota:</strong> Este é um sistema de demonstração. Todos os dados são salvos
-                no <strong>LocalStorage</strong> do seu navegador, não em arquivos no servidor.
-                Os dados persistirão se você fechar a aba, mas não serão compartilhados.
-            </div>
+        <div id="view-landing" class="view" style="text-align: center;">
+            <h2>Bem-vindo!</h2>
+            <p>Selecione a área que deseja acessar:</p>
             <br>
-            <button id="btn-limpar-dados" class="btn-aviso">Limpar Todos os Dados Salvos</button>
-        </div>
-
-        <div id="view-cadastro-cliente" class="view">
-            <h2>[1] Cadastro de Cliente</h2>
-            <form id="form-add-cliente">
-                <div class="form-grupo">
-                    <label for="cliente-nome">Nome:</label>
-                    <input type="text" id="cliente-nome" required>
-                </div>
-                <div class="form-grupo">
-                    <label for="cliente-telefone">Telefone:</label>
-                    <input type="tel" id="cliente-telefone" required>
-                </div>
-                <div class="form-grupo">
-                    <label for="cliente-endereco">Endereço:</label>
-                    <input type="text" id="cliente-endereco">
-                </div>
-                <div class="form-grupo">
-                    <label for="cliente-cpf">CPF:</label>
-                    <input type="text" id="cliente-cpf">
-                </div>
-                <button type="submit" class="btn-principal">Cadastrar Cliente</button>
-            </form>
+            <button id="btn-goto-cliente" class="btn-principal" style="margin-right: 10px; padding: 20px; min-width: 180px;">
+                Área Cliente
+            </button>
+            <button id="btn-goto-funcionario" class="btn-secundario" style="padding: 20px; min-width: 180px;">
+                Área Funcionário
+            </button>
         </div>
         
-        <div id="view-gerenciar-cadastros" class="view">
-            <h2>[6] Gerenciar Cadastros de Clientes</h2>
-            
-            <form id="form-edit-cliente" class="hidden">
-                <h3>Editando Cliente</h3>
-                <input type="hidden" id="edit-cliente-id">
-                <div class="form-grupo">
-                    <label for="edit-cliente-nome">Nome:</label>
-                    <input type="text" id="edit-cliente-nome" required>
-                </div>
-                <div class="form-grupo">
-                    <label for="edit-cliente-telefone">Telefone:</label>
-                    <input type="tel" id="edit-cliente-telefone" required>
-                </div>
-                <div class="form-grupo">
-                    <label for="edit-cliente-endereco">Endereço:</label>
-                    <input type="text" id="edit-cliente-endereco">
-                </div>
-                <div class="form-grupo">
-                    <label for="edit-cliente-cpf">CPF:</label>
-                    <input type="text" id="edit-cliente-cpf">
-                </div>
-                <button type="submit" class="btn-sucesso">Salvar Alterações</button>
-                <button type="button" id="btn-cancelar-edicao-cliente" class="btn-secundario">Cancelar</button>
-            </form>
+        <div id="view-cliente-app" class="view">
+            <div id="cliente-message-area" class="message-area"></div>
 
-            <h3>Clientes Cadastrados</h3>
-            <div style="overflow-x:auto;">
-                <table id="table-gerenciar-clientes">
-                    <thead>
-                        <tr>
-                            <th>ID</th>
-                            <th>Nome</th>
-                            <th>Telefone</th>
-                            <th>Status</th>
-                            <th>Ações</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        </tbody>
-                </table>
-            </div>
-        </div>
-        
-        <div id="view-cadastro-produto" class="view">
-            <h2>[2] Cadastro de Produtos</h2>
-
-            <form id="form-add-pizza">
-                <h3>Cadastrar Nova Pizza</h3>
-                <div class="form-grupo">
-                    <label for="pizza-sabor">Sabor:</label>
-                    <input type="text" id="pizza-sabor" required>
-                </div>
-                <div class="form-grupo">
-                    <label for="pizza-ingredientes">Ingredientes:</label>
-                    <textarea id="pizza-ingredientes" required></textarea>
-                </div>
-                <div class="form-grupo">
-                    <label for="pizza-preco">Preço (R$):</label>
-                    <input type="number" step="0.01" id="pizza-preco" required>
-                </div>
-                <button type="submit" class="btn-principal">Cadastrar Pizza</button>
-            </form>
-
-            <hr style="margin: 30px 0;">
-
-            <form id="form-add-outro">
-                <h3>Cadastrar Outros Produtos (Bebidas, etc.)</h3>
-                <div class="form-grupo">
-                    <label for="outro-nome">Nome do Produto:</label>
-                    <input type="text" id="outro-nome" required>
-                </div>
-                <div class="form-grupo">
-                    <label for="outro-preco">Preço (R$):</label>
-                    <input type="number" step="0.01" id="outro-preco" required>
-                </div>
-                <button type="submit" class="btn-principal">Cadastrar Outro Produto</button>
-            </form>
-        </div>
-
-        <div id="view-gerenciar-cardapio" class="view">
-            <h2>[5] Gerenciar Cardápio</h2>
-            
-            <h3>Gerenciar Pizzas</h3>
-            <div style="overflow-x:auto;">
-                <table id="table-gerenciar-pizzas">
-                    <thead>
-                        <tr>
-                            <th>ID</th>
-                            <th>Sabor</th>
-                            <th>Preço</th>
-                            <th>Status</th>
-                            <th>Ações</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        </tbody>
-                </table>
-            </div>
-
-            <h3 style="margin-top: 30px;">Gerenciar Outros Produtos</h3>
-            <div style="overflow-x:auto;">
-                <table id="table-gerenciar-outros">
-                    <thead>
-                        <tr>
-                            <th>ID</th>
-                            <th>Nome</th>
-                            <th>Preço</th>
-                            <th>Status</th>
-                            <th>Ações</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        </tbody>
-                </table>
-            </div>
-        </div>
-
-        <div id="view-gerar-pedido" class="view">
-            <h2>[3] Gerar Pedido</h2>
-            <form id="form-gerar-pedido">
-                <div class="form-grupo">
-                    <label for="pedido-cliente">Selecione o Cliente:</label>
-                    <select id="pedido-cliente" required>
-                        <option value="">-- Carregando clientes... --</option>
-                    </select>
-                </div>
-                
-                <hr>
-                <h3>Itens do Pedido</h3>
-                
-                <div class="form-grupo">
-                    <label for="pedido-pizza">Selecione a Pizza:</label>
-                    <select id="pedido-pizza" required>
-                        <option value="">-- Carregando cardápio... --</option>
-                    </select>
-                </div>
-                <div class="form-grupo">
-                    <label for="pedido-qtd-pizza">Quantidade (Pizza):</label>
-                    <input type="number" id="pedido-qtd-pizza" value="1" min="1" required>
-                </div>
-
-                <div class="form-grupo">
-                    <input type="checkbox" id="pedido-add-outro" style="width: auto;">
-                    <label for="pedido-add-outro" style="display: inline-block;">Adicionar bebida ou outro item?</label>
-                </div>
-                
-                <div id="pedido-outro-grupo" class="hidden">
+            <div id="view-cliente-cadastro" class="view" style="display: block; border: none; padding: 0;">
+                <h2>Bem-vindo!</h2>
+                <p>Para fazer seu pedido, precisamos de alguns dados.</p>
+                <form id="form-cliente-registro">
                     <div class="form-grupo">
-                        <label for="pedido-outro">Selecione o Produto Extra:</label>
-                        <select id="pedido-outro">
-                            <option value="">-- Carregando outros produtos... --</option>
+                        <label for="reg-cliente-nome">Nome Completo:</label>
+                        <input type="text" id="reg-cliente-nome" required>
+                    </div>
+                    <div class="form-grupo">
+                        <label for="reg-cliente-telefone">Telefone (para contato):</label>
+                        <input type="tel" id="reg-cliente-telefone" required>
+                    </div>
+                    <div class="form-grupo">
+                        <label for="reg-cliente-endereco">Endereço (para entrega):</label>
+                        <input type="text" id="reg-cliente-endereco" required>
+                    </div>
+                    <div class="form-grupo">
+                        <label for="reg-cliente-cpf">CPF (opcional):</label>
+                        <input type="text" id="reg-cliente-cpf">
+                    </div>
+                    <button type="submit" class="btn-principal">Cadastrar e Ver Cardápio</button>
+                </form>
+            </div>
+
+            <div id="view-cliente-pedido" class="view" style="display: none; border: none; padding: 0;">
+                <h2 id="welcome-message">Olá! Faça seu pedido.</h2>
+                
+                <form id="form-novo-pedido">
+                    <h3>Cardápio</h3>
+                    
+                    <div class="form-grupo">
+                        <label for="pedido-pizza-cliente">Selecione a Pizza:</label>
+                        <select id="pedido-pizza-cliente" required>
+                            <option value="">-- Carregando pizzas... --</option>
                         </select>
                     </div>
                     <div class="form-grupo">
-                        <label for="pedido-qtd-outro">Quantidade (Extra):</label>
-                        <input type="number" id="pedido-qtd-outro" value="1" min="1">
+                        <label for="pedido-qtd-pizza-cliente">Quantidade (Pizza):</label>
+                        <input type="number" id="pedido-qtd-pizza-cliente" value="1" min="1" required>
+                    </div>
+
+                    <div class="form-grupo">
+                        <input type="checkbox" id="pedido-add-outro-cliente" style="width: auto;">
+                        <label for="pedido-add-outro-cliente" style="display: inline-block;">Adicionar bebida ou outro item?</label>
+                    </div>
+                    
+                    <div id="pedido-outro-grupo-cliente" class="hidden">
+                        <div class="form-grupo">
+                            <label for="pedido-outro-cliente">Selecione o Produto Extra:</label>
+                            <select id="pedido-outro-cliente">
+                                <option value="">-- Carregando outros produtos... --</option>
+                            </select>
+                        </div>
+                        <div class="form-grupo">
+                            <label for="pedido-qtd-outro-cliente">Quantidade (Extra):</label>
+                            <input type="number" id="pedido-qtd-outro-cliente" value="1" min="1">
+                        </div>
+                    </div>
+
+                    <hr>
+                    <h3>Pagamento</h3>
+                    <div class="form-grupo">
+                        <label for="pedido-pagamento-cliente">Forma de Pagamento:</label>
+                        <select id="pedido-pagamento-cliente" required>
+                            <option value="">Selecione...</option>
+                            <option value="Pix">Pix</option>
+                            <option value="Cartão">Cartão (Débito/Crédito)</option>
+                            <option value="Dinheiro">Dinheiro</option>
+                        </select>
+                    </div>
+
+                    <h3 id="pedido-valor-total-cliente" style="text-align: right;">Valor Total: R$ 0.00</h3>
+                    
+                    <button type="submit" class="btn-principal">Fazer Pedido</button>
+                </form>
+                
+                <hr>
+                
+                <h3>Meus Pedidos</h3>
+                <div id="area-meus-pedidos" style="overflow-x:auto;">
+                    <p>Carregando seus pedidos...</p>
+                </div>
+                
+                <br>
+                <button id="btn-cliente-sair" class="btn-secundario">Sair (Limpar meus dados)</button>
+            </div>
+            
+            <hr>
+            <button id="btn-cliente-voltar" class="btn-secundario btn-pequeno">Voltar à Página Inicial</button>
+        </div>
+        
+        
+        <div id="view-funcionario-login" class="view">
+            <div id="login-message-area" class="message-area"></div>
+
+            <h2>Login do Funcionário</h2>
+            <form id="form-login-funcionario">
+                <div class="form-grupo">
+                    <label for="login-user">Usuário:</label>
+                    <input type="text" id="login-user" value="admin">
+                </div>
+                <div class="form-grupo">
+                    <label for="login-pass">Senha:</label>
+                    <input type="password" id="login-pass" value="admin">
+                </div>
+                <button type="submit" class="btn-principal">Entrar</button>
+            </form>
+            <hr>
+            <button id="btn-login-voltar" class="btn-secundario btn-pequeno">Voltar à Página Inicial</button>
+        </div>
+
+
+        <div id="view-funcionario-app" class="view" style="padding: 0; border: none; background: none;">
+            <nav id="admin-nav">
+                <button class="nav-btn" data-view="view-main-menu">Início</button>
+                <button class="nav-btn" data-view="view-cadastro-cliente">Cadastro de Cliente</button>
+                <button class="nav-btn" data-view="view-cadastro-produto">Cadastro de Produtos</button>
+                <button class="nav-btn" data-view="view-gerar-pedido">Gerar Pedido</button>
+                <button class="nav-btn" data-view="view-gerenciar-pedidos">Gerenciar Pedidos</button>
+                <button class="nav-btn" data-view="view-relatorios">Relatórios</button>
+                <button class="nav-btn" data-view="view-gerenciar-cardapio">Gerenciar Cardápio</button>
+                <button class="nav-btn" data-view="view-gerenciar-cadastros">Gerenciar Cadastros</button>
+                <button id="btn-admin-logout" class="btn-aviso" style="padding: 10px 15px; margin-left: 15px;">Sair</button>
+            </nav>
+
+            <div style="background-color: var(--cor-surface); padding: 30px; border-radius: var(--raio-borda); border: 1px solid var(--cor-borda);">
+                <div id="funcionario-message-area" class="message-area"></div>
+
+                <div id="view-main-menu" class="view" style="display: block; border: none; padding: 0;">
+                    <h2>Bem-vindo ao PizzaSystem (Admin)</h2>
+                    <p>Selecione uma opção no menu acima para começar.</p>
+                    <div class="disclaimer">
+                        <strong>Nota:</strong> Este é um sistema de demonstração. Todos os dados são salvos
+                        no <strong>LocalStorage</strong> do seu navegador, não em arquivos no servidor.
+                    </div>
+                    <br>
+                    <button id="btn-limpar-dados" class="btn-aviso">Limpar Todos os Dados Salvos</button>
+                </div>
+
+                <div id="view-cadastro-cliente" class="view" style="display: none; border: none; padding: 0;">
+                    <h2>[1] Cadastro de Cliente (Admin)</h2>
+                    <form id="form-add-cliente">
+                        <div class="form-grupo">
+                            <label for="cliente-nome">Nome:</label>
+                            <input type="text" id="cliente-nome" required>
+                        </div>
+                        <div class="form-grupo">
+                            <label for="cliente-telefone">Telefone:</label>
+                            <input type="tel" id="cliente-telefone" required>
+                        </div>
+                        <div class="form-grupo">
+                            <label for="cliente-endereco">Endereço:</label>
+                            <input type="text" id="cliente-endereco">
+                        </div>
+                        <div class="form-grupo">
+                            <label for="cliente-cpf">CPF:</label>
+                            <input type="text" id="cliente-cpf">
+                        </div>
+                        <button type="submit" class="btn-principal">Cadastrar Cliente</button>
+                    </form>
+                </div>
+                
+                <div id="view-gerenciar-cadastros" class="view" style="display: none; border: none; padding: 0;">
+                    <h2>[6] Gerenciar Cadastros de Clientes</h2>
+                    
+                    <form id="form-edit-cliente" class="hidden">
+                        <h3>Editando Cliente</h3>
+                        <input type="hidden" id="edit-cliente-id">
+                        <div class="form-grupo">
+                            <label for="edit-cliente-nome">Nome:</label>
+                            <input type="text" id="edit-cliente-nome" required>
+                        </div>
+                        <div class="form-grupo">
+                            <label for="edit-cliente-telefone">Telefone:</label>
+                            <input type="tel" id="edit-cliente-telefone" required>
+                        </div>
+                        <div class="form-grupo">
+                            <label for="edit-cliente-endereco">Endereço:</label>
+                            <input type="text" id="edit-cliente-endereco">
+                        </div>
+                        <div class="form-grupo">
+                            <label for="edit-cliente-cpf">CPF:</label>
+                            <input type="text" id="edit-cliente-cpf">
+                        </div>
+                        <button type="submit" class="btn-sucesso">Salvar Alterações</button>
+                        <button type="button" id="btn-cancelar-edicao-cliente" class="btn-secundario">Cancelar</button>
+                    </form>
+
+                    <h3>Clientes Cadastrados</h3>
+                    <div style="overflow-x:auto;">
+                        <table id="table-gerenciar-clientes">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Nome</th>
+                                    <th>Telefone</th>
+                                    <th>Status</th>
+                                    <th>Ações</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                </tbody>
+                        </table>
+                    </div>
+                </div>
+                
+                <div id="view-cadastro-produto" class="view" style="display: none; border: none; padding: 0;">
+                    <h2>[2] Cadastro de Produtos</h2>
+
+                    <form id="form-add-pizza">
+                        <h3>Cadastrar Nova Pizza</h3>
+                        <div class="form-grupo">
+                            <label for="pizza-sabor">Sabor:</label>
+                            <input type="text" id="pizza-sabor" required>
+                        </div>
+                        <div class="form-grupo">
+                            <label for="pizza-ingredientes">Ingredientes:</label>
+                            <textarea id="pizza-ingredientes" required></textarea>
+                        </div>
+                        <div class="form-grupo">
+                            <label for="pizza-preco">Preço (R$):</label>
+                            <input type="number" step="0.01" id="pizza-preco" required>
+                        </div>
+                        <button type="submit" class="btn-principal">Cadastrar Pizza</button>
+                    </form>
+
+                    <hr style="margin: 30px 0;">
+
+                    <form id="form-add-outro">
+                        <h3>Cadastrar Outros Produtos (Bebidas, etc.)</h3>
+                        <div class="form-grupo">
+                            <label for="outro-nome">Nome do Produto:</label>
+                            <input type="text" id="outro-nome" required>
+                        </div>
+                        <div class="form-grupo">
+                            <label for="outro-preco">Preço (R$):</label>
+                            <input type="number" step="0.01" id="outro-preco" required>
+                        </div>
+                        <button type="submit" class="btn-principal">Cadastrar Outro Produto</button>
+                    </form>
+                </div>
+
+                <div id="view-gerenciar-cardapio" class="view" style="display: none; border: none; padding: 0;">
+                    <h2>[5] Gerenciar Cardápio</h2>
+                    
+                    <h3>Gerenciar Pizzas</h3>
+                    <div style="overflow-x:auto;">
+                        <table id="table-gerenciar-pizzas">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Sabor</th>
+                                    <th>Preço</th>
+                                    <th>Status</th>
+                                    <th>Ações</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                </tbody>
+                        </table>
+                    </div>
+
+                    <h3 style="margin-top: 30px;">Gerenciar Outros Produtos</h3>
+                    <div style="overflow-x:auto;">
+                        <table id="table-gerenciar-outros">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Nome</th>
+                                    <th>Preço</th>
+                                    <th>Status</th>
+                                    <th>Ações</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                </tbody>
+                        </table>
                     </div>
                 </div>
 
-                <hr>
-                <h3>Pagamento</h3>
-                <div class="form-grupo">
-                    <label for="pedido-pagamento">Forma de Pagamento:</label>
-                    <select id="pedido-pagamento" required>
-                        <option value="">Selecione...</option>
-                        <option value="Pix">Pix</option>
-                        <option value="Cartão">Cartão (Débito/Crédito)</option>
-                        <option value="Dinheiro">Dinheiro</option>
-                    </select>
-                </div>
+                <div id="view-gerar-pedido" class="view" style="display: none; border: none; padding: 0;">
+                    <h2>[3] Gerar Pedido (Admin)</h2>
+                    <form id="form-gerar-pedido">
+                        <div class="form-grupo">
+                            <label for="pedido-cliente">Selecione o Cliente:</label>
+                            <select id="pedido-cliente" required>
+                                <option value="">-- Carregando clientes... --</option>
+                            </select>
+                        </div>
+                        
+                        <hr>
+                        <h3>Itens do Pedido</h3>
+                        
+                        <div class="form-grupo">
+                            <label for="pedido-pizza">Selecione a Pizza:</label>
+                            <select id="pedido-pizza" required>
+                                <option value="">-- Carregando cardápio... --</option>
+                            </select>
+                        </div>
+                        <div class="form-grupo">
+                            <label for="pedido-qtd-pizza">Quantidade (Pizza):</label>
+                            <input type="number" id="pedido-qtd-pizza" value="1" min="1" required>
+                        </div>
 
-                <h3 id="pedido-valor-total" style="text-align: right;">Valor Total: R$ 0.00</h3>
+                        <div class="form-grupo">
+                            <input type="checkbox" id="pedido-add-outro" style="width: auto;">
+                            <label for="pedido-add-outro" style="display: inline-block;">Adicionar bebida ou outro item?</label>
+                        </div>
+                        
+                        <div id="pedido-outro-grupo" class="hidden">
+                            <div class="form-grupo">
+                                <label for="pedido-outro">Selecione o Produto Extra:</label>
+                                <select id="pedido-outro">
+                                    <option value="">-- Carregando outros produtos... --</option>
+                                </select>
+                            </div>
+                            <div class="form-grupo">
+                                <label for="pedido-qtd-outro">Quantidade (Extra):</label>
+                                <input type="number" id="pedido-qtd-outro" value="1" min="1">
+                            </div>
+                        </div>
+
+                        <hr>
+                        <h3>Pagamento</h3>
+                        <div class="form-grupo">
+                            <label for="pedido-pagamento">Forma de Pagamento:</label>
+                            <select id="pedido-pagamento" required>
+                                <option value="">Selecione...</option>
+                                <option value="Pix">Pix</option>
+                                <option value="Cartão">Cartão (Débito/Crédito)</option>
+                                <option value="Dinheiro">Dinheiro</option>
+                            </select>
+                        </div>
+
+                        <h3 id="pedido-valor-total" style="text-align: right;">Valor Total: R$ 0.00</h3>
+                        
+                        <button type="submit" class="btn-principal">Finalizar Pedido</button>
+                    </form>
+
+                    <div id="pedido-comprovante-area" class="hidden">
+                        </div>
+                </div>
                 
-                <button type="submit" class="btn-principal">Finalizar Pedido</button>
-            </form>
-
-            <div id="pedido-comprovante-area" class="hidden">
+                <div id="view-gerenciar-pedidos" class="view" style="display: none; border: none; padding: 0;">
+                    <h2>[7] Gerenciar Pedidos</h2>
+                    <p>Pedidos mais recentes primeiro. Use o seletor para alterar o status de um pedido.</p>
+                    
+                    <div style="overflow-x:auto;">
+                        <table id="table-gerenciar-pedidos">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Cliente</th>
+                                    <th>Itens</th>
+                                    <th>Valor</th>
+                                    <th>Data/Hora</th>
+                                    <th>Status</th>
+                                    <th>Ações</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
-        </div>
-        
-        <div id="view-relatorios" class="view">
-            <h2>[4] Relatórios</h2>
-            <div style="display: flex; gap: 10px; margin-bottom: 20px;">
-                <button id="btn-relatorio-diario" class="btn-principal">Relatório Diário</button>
-                <button id="btn-relatorio-mensal" class="btn-secundario">Relatório Mensal</button>
+                
+                <div id="view-relatorios" class="view" style="display: none; border: none; padding: 0;">
+                    <h2>[4] Relatórios</h2>
+                    <div style="display: flex; gap: 10px; margin-bottom: 20px;">
+                        <button id="btn-relatorio-diario" class="btn-principal">Relatório Diário</button>
+                        <button id="btn-relatorio-mensal" class="btn-secundario">Relatório Mensal</button>
+                    </div>
+                    
+                    <div id="output-relatorios">
+                        </div>
+                </div>
             </div>
-            
-            <div id="output-relatorios">
-                </div>
         </div>
 
     </main>
 
-    <script src="script.js"></script>
+    <script>
+    
+    // --- 1. BANCO DE DADOS E FUNÇÕES COMPARTILHADAS ---
+    
+    let db = {
+        clientes: [],
+        cardapio: [],
+        outrosProdutos: [],
+        pedidos: []
+    };
+    
+    const CLIENTE_ATIVO_KEY = 'pizzaSystemClienteAtivo';
+
+    function carregarDB() {
+        const dbSalvo = localStorage.getItem('pizzaSystemDB');
+        if (dbSalvo) {
+            db = JSON.parse(dbSalvo);
+        }
+    }
+
+    function salvarDB() {
+        localStorage.setItem('pizzaSystemDB', JSON.stringify(db));
+    }
+
+    function gerarProximoId(array, padLength = 3) {
+        if (array.length === 0) {
+            return '1'.padStart(padLength, '0');
+        }
+        const ultimoItem = array[array.length - 1];
+        const proximoIdNum = parseInt(ultimoItem.id, 10) + 1;
+        return proximoIdNum.toString().padStart(padLength, '0');
+    }
+    
+    const findClienteById = (id) => db.clientes.find(c => c.id === id);
+    const findPizzaById = (id) => db.cardapio.find(p => p.id === id);
+    const findOutroById = (id) => db.outrosProdutos.find(o => o.id === id);
+    
+    function getDataHoraAtual() {
+        const data = new Date();
+        const dia = data.getDate().toString().padStart(2, '0');
+        const mes = (data.getMonth() + 1).toString().padStart(2, '0');
+        const ano = data.getFullYear();
+        const hora = data.getHours().toString().padStart(2, '0');
+        const min = data.getMinutes().toString().padStart(2, '0');
+        const seg = data.getSeconds().toString().padStart(2, '0');
+        return `${dia}/${mes}/${ano} ${hora}:${min}:${seg}`;
+    }
+
+    // --- 2. CONTROLE PRINCIPAL DA APLICAÇÃO (SPA) ---
+    
+    document.addEventListener('DOMContentLoaded', () => {
+        // Carrega o banco de dados uma vez
+        carregarDB();
+        
+        // Referências para as "páginas" principais
+        const viewLanding = document.getElementById('view-landing');
+        const viewClienteApp = document.getElementById('view-cliente-app');
+        const viewFuncionarioLogin = document.getElementById('view-funcionario-login');
+        const viewFuncionarioApp = document.getElementById('view-funcionario-app');
+        const allAppViews = [viewLanding, viewClienteApp, viewFuncionarioLogin, viewFuncionarioApp];
+        
+        // Função para trocar a "página" principal
+        function showAppView(viewToShow) {
+            window.scrollTo(0, 0);
+            allAppViews.forEach(v => v.style.display = 'none');
+            if (viewToShow) {
+                viewToShow.style.display = 'block';
+            }
+        }
+        
+        // --- INICIALIZAÇÃO DOS MÓDULOS ---
+        // Cada módulo (cliente, login, admin) é inicializado
+        // e passa a gerenciar sua própria "página"
+        
+        const { showLoginMessage } = initFuncionarioLogin(
+            () => showAppView(viewFuncionarioApp) // Callback de sucesso
+        );
+        
+        initClienteApp(
+            () => showAppView(viewLanding) // Callback de "Voltar"
+        );
+        
+        initFuncionarioApp(
+            () => { // Callback de "Logout"
+                showLoginMessage('Logout realizado.', 'success');
+                showAppView(viewFuncionarioLogin);
+            },
+            () => { // Callback de "Limpar DB"
+                showLoginMessage('Todos os dados foram apagados.', 'success');
+                showAppView(viewFuncionarioLogin);
+            }
+        );
+        
+        // --- EVENTOS DA PÁGINA INICIAL ---
+        
+        document.getElementById('btn-goto-cliente').addEventListener('click', () => {
+            showAppView(viewClienteApp);
+        });
+        
+        document.getElementById('btn-goto-funcionario').addEventListener('click', () => {
+            showAppView(viewFuncionarioLogin);
+        });
+        
+        document.getElementById('btn-login-voltar').addEventListener('click', () => {
+            showAppView(viewLanding);
+        });
+        
+        // Inicia na Landing Page
+        showAppView(viewLanding);
+    });
+
+    // --- 3. LÓGICA DA APLICAÇÃO DO CLIENTE ---
+    
+    function initClienteApp(onVoltarCallback) {
+        
+        const messageArea = document.getElementById('cliente-message-area');
+        const viewCadastro = document.getElementById('view-cliente-cadastro');
+        const viewPedido = document.getElementById('view-cliente-pedido');
+        
+        function exibirMensagem(texto, tipo = 'success') {
+            messageArea.textContent = texto;
+            messageArea.className = 'message-area ' + tipo;
+            window.scrollTo(0, 0);
+        }
+
+        function limparMensagem() {
+            messageArea.textContent = '';
+            messageArea.className = 'message-area';
+        }
+        
+        const formRegistro = document.getElementById('form-cliente-registro');
+        
+        function controlarViewsCliente() {
+            limparMensagem();
+            const clienteSalvo = localStorage.getItem(CLIENTE_ATIVO_KEY);
+            
+            if (clienteSalvo) {
+                const cliente = JSON.parse(clienteSalvo);
+                document.getElementById('welcome-message').textContent = `Olá, ${cliente.nome}! Faça seu pedido.`;
+                viewCadastro.style.display = 'none';
+                viewPedido.style.display = 'block';
+                popularMeusPedidos();
+            } else {
+                viewCadastro.style.display = 'block';
+                viewPedido.style.display = 'none';
+            }
+        }
+        
+        formRegistro.addEventListener('submit', (e) => {
+            e.preventDefault();
+            
+            const id = gerarProximoId(db.clientes, 3);
+            const novoCliente = {
+                id: id,
+                nome: document.getElementById('reg-cliente-nome').value,
+                telefone: document.getElementById('reg-cliente-telefone').value,
+                endereco: document.getElementById('reg-cliente-endereco').value,
+                cpf: document.getElementById('reg-cliente-cpf').value,
+                status: '1'
+            };
+            
+            db.clientes.push(novoCliente);
+            salvarDB();
+            
+            localStorage.setItem(CLIENTE_ATIVO_KEY, JSON.stringify(novoCliente));
+            
+            exibirMensagem('Cadastro realizado com sucesso!', 'success');
+            controlarViewsCliente();
+        });
+
+        document.getElementById('btn-cliente-sair').addEventListener('click', () => {
+            if (confirm('Deseja realmente sair? Seus dados de cadastro (nome, telefone, etc.) serão removidos deste navegador.')) {
+                localStorage.removeItem(CLIENTE_ATIVO_KEY);
+                controlarViewsCliente();
+            }
+        });
+        
+        document.getElementById('btn-cliente-voltar').addEventListener('click', onVoltarCallback);
+
+        const formGerarPedidoCliente = document.getElementById('form-novo-pedido');
+        const selectPizzaCliente = document.getElementById('pedido-pizza-cliente');
+        const selectOutroCliente = document.getElementById('pedido-outro-cliente');
+        const checkAddOutroCliente = document.getElementById('pedido-add-outro-cliente');
+        const grupoOutroCliente = document.getElementById('pedido-outro-grupo-cliente');
+        const totalDisplayCliente = document.getElementById('pedido-valor-total-cliente');
+        
+        function popularSelectsPedidoCliente() {
+            selectPizzaCliente.innerHTML = '<option value="">Selecione uma pizza...</option>';
+            db.cardapio.filter(p => p.status === '1').forEach(p => {
+                selectPizzaCliente.innerHTML += `<option value="${p.id}" data-preco="${p.preco}">[${p.id}] ${p.sabor} - R$ ${p.preco}</option>`;
+            });
+            
+            selectOutroCliente.innerHTML = '<option value="">Selecione um item extra...</option>';
+            db.outrosProdutos.filter(o => o.status === '1').forEach(o => {
+                selectOutroCliente.innerHTML += `<option value="${o.id}" data-preco="${o.preco}">[${o.id}] ${o.nome} - R$ ${o.preco}</option>`;
+            });
+        }
+        
+        checkAddOutroCliente.addEventListener('change', () => {
+            grupoOutroCliente.classList.toggle('hidden', !checkAddOutroCliente.checked);
+            recalcularTotalPedidoCliente();
+        });
+
+        const camposRecalculoCliente = [selectPizzaCliente, document.getElementById('pedido-qtd-pizza-cliente'), checkAddOutroCliente, selectOutroCliente, document.getElementById('pedido-qtd-outro-cliente')];
+        camposRecalculoCliente.forEach(campo => campo.addEventListener('change', recalcularTotalPedidoCliente));
+        
+        function recalcularTotalPedidoCliente() {
+            let total = 0;
+            
+            const pizzaOption = selectPizzaCliente.options[selectPizzaCliente.selectedIndex];
+            if (pizzaOption && pizzaOption.value) {
+                total += (parseFloat(pizzaOption.dataset.preco) || 0) * (parseInt(document.getElementById('pedido-qtd-pizza-cliente').value) || 1);
+            }
+            
+            if (checkAddOutroCliente.checked) {
+                const outroOption = selectOutroCliente.options[selectOutroCliente.selectedIndex];
+                if (outroOption && outroOption.value) {
+                    total += (parseFloat(outroOption.dataset.preco) || 0) * (parseInt(document.getElementById('pedido-qtd-outro-cliente').value) || 1);
+                }
+            }
+            
+            totalDisplayCliente.textContent = `Valor Total: R$ ${total.toFixed(2)}`;
+        }
+
+        formGerarPedidoCliente.addEventListener('submit', (e) => {
+            e.preventDefault();
+            
+            const clienteSalvo = localStorage.getItem(CLIENTE_ATIVO_KEY);
+            if (!clienteSalvo) {
+                exibirMensagem('Erro: Seus dados de cliente não foram encontrados.', 'error');
+                controlarViewsCliente();
+                return;
+            }
+            
+            const cliente = JSON.parse(clienteSalvo);
+            const pizzaId = selectPizzaCliente.value;
+            const pizza = findPizzaById(pizzaId);
+            
+            if (!pizza) {
+                exibirMensagem('Erro: Pizza não selecionada.', 'error');
+                return;
+            }
+            
+            const qtdPizza = parseInt(document.getElementById('pedido-qtd-pizza-cliente').value);
+            const formaPagamento = document.getElementById('pedido-pagamento-cliente').value;
+            if (!formaPagamento) {
+                exibirMensagem('Erro: Selecione uma forma de pagamento.', 'error');
+                return;
+            }
+
+            const dataHora = getDataHoraAtual();
+            const idPedido = gerarProximoId(db.pedidos, 4);
+            
+            let valorTotal = parseFloat(pizza.preco) * qtdPizza;
+            let itemExtra = null;
+            
+            if (checkAddOutroCliente.checked && selectOutroCliente.value) {
+                const outroId = selectOutroCliente.value;
+                const outroProd = findOutroById(outroId);
+                if (outroProd) {
+                    const qtdOutro = parseInt(document.getElementById('pedido-qtd-outro-cliente').value);
+                    valorTotal += parseFloat(outroProd.preco) * qtdOutro;
+                    itemExtra = { id: outroId, qtd: qtdOutro };
+                }
+            }
+            
+            const novoPedido = {
+                id: idPedido,
+                clienteId: cliente.id,
+                pizzaId: pizzaId,
+                qtdPizza: qtdPizza,
+                valorTotal: valorTotal.toFixed(2),
+                dataHora: dataHora,
+                formaPagamento: formaPagamento,
+                itemExtra: itemExtra,
+                status: 'Recebido'
+            };
+            
+            db.pedidos.push(novoPedido);
+            salvarDB();
+            
+            exibirMensagem(`Pedido ${idPedido} enviado com sucesso! Acompanhe abaixo.`, 'success');
+            
+            formGerarPedidoCliente.reset();
+            recalcularTotalPedidoCliente();
+            popularMeusPedidos();
+        });
+        
+        const areaMeusPedidos = document.getElementById('area-meus-pedidos');
+        
+        function popularMeusPedidos() {
+            const clienteSalvo = localStorage.getItem(CLIENTE_ATIVO_KEY);
+            if (!clienteSalvo) return;
+            
+            const cliente = JSON.parse(clienteSalvo);
+            const meusPedidos = db.pedidos.filter(p => p.clienteId === cliente.id).reverse();
+            
+            if (meusPedidos.length === 0) {
+                areaMeusPedidos.innerHTML = '<p>Você ainda não fez nenhum pedido.</p>';
+                return;
+            }
+            
+            let html = `
+                <table>
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Itens</th>
+                            <th>Valor</th>
+                            <th>Data/Hora</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+            `;
+            
+            meusPedidos.forEach(pedido => {
+                const pizza = findPizzaById(pedido.pizzaId);
+                let itensHTML = `Pizza: ${pizza ? pizza.sabor : 'N/A'} (x${pedido.qtdPizza})`;
+                
+                if (pedido.itemExtra) {
+                    const outro = findOutroById(pedido.itemExtra.id);
+                    itensHTML += `<br>Extra: ${outro ? outro.nome : 'N/A'} (x${pedido.itemExtra.qtd})`;
+                }
+                
+                html += `
+                    <tr>
+                        <td>${pedido.id}</td>
+                        <td>${itensHTML}</td>
+                        <td>R$ ${pedido.valorTotal}</td>
+                        <td>${pedido.dataHora}</td>
+                        <td><strong>${pedido.status}</strong></td>
+                    </tr>
+                `;
+            });
+            
+            html += '</tbody></table>';
+            areaMeusPedidos.innerHTML = html;
+        }
+
+        // --- PONTO DA CORREÇÃO ---
+        popularSelectsPedidoCliente();
+        recalcularTotalPedidoCliente();
+        controlarViewsCliente();
+    }
+    
+    // --- 4. LÓGICA DO LOGIN DO FUNCIONÁRIO ---
+    
+    function initFuncionarioLogin(onLoginSuccessCallback) {
+        
+        const messageArea = document.getElementById('login-message-area');
+        
+        function exibirMensagem(texto, tipo = 'success') {
+            messageArea.textContent = texto;
+            messageArea.className = 'message-area ' + tipo;
+            window.scrollTo(0, 0);
+        }
+
+        function limparMensagem() {
+            messageArea.textContent = '';
+            messageArea.className = 'message-area';
+        }
+        
+        document.getElementById('form-login-funcionario').addEventListener('submit', (e) => {
+            e.preventDefault();
+            limparMensagem();
+            const user = document.getElementById('login-user').value;
+            const pass = document.getElementById('login-pass').value;
+            
+            if (user === 'admin' && pass === 'admin') {
+                // Não exibe msg aqui, deixa o painel admin exibir
+                onLoginSuccessCallback();
+            } else {
+                exibirMensagem('Usuário ou senha incorretos.', 'error');
+            }
+        });
+        
+        // Retorna a função de exibir msg para o controlador principal
+        return { showLoginMessage: exibirMensagem };
+    }
+    
+    
+    // --- 5. LÓGICA DA APLICAÇÃO DO FUNCIONÁRIO (PAINEL) ---
+
+    function initFuncionarioApp(onLogoutCallback, onLimparDbCallback) {
+        
+        const messageArea = document.getElementById('funcionario-message-area');
+        
+        function exibirMensagem(texto, tipo = 'success') {
+            messageArea.textContent = texto;
+            messageArea.className = 'message-area ' + tipo;
+            window.scrollTo(0, 0);
+        }
+
+        function limparMensagem() {
+            messageArea.textContent = '';
+            messageArea.className = 'message-area';
+        }
+        
+        function limparDB() {
+            if (confirm('TEM CERTEZA? \nIsso apagará PERMANENTEMENTE todos os clientes, produtos e pedidos salvos no seu navegador.')) {
+                localStorage.removeItem('pizzaSystemDB');
+                localStorage.removeItem(CLIENTE_ATIVO_KEY);
+                db = { clientes: [], cardapio: [], outrosProdutos: [], pedidos: [] };
+                onLimparDbCallback();
+            }
+        }
+
+        const allViews = document.querySelectorAll('#view-funcionario-app .view');
+        const adminNav = document.getElementById('admin-nav');
+        const adminNavButtons = document.querySelectorAll('#admin-nav .nav-btn');
+        
+        function showView(viewId) {
+            limparMensagem();
+            
+            allViews.forEach(view => view.style.display = 'none');
+            
+            const viewToShow = document.getElementById(viewId);
+            if (viewToShow) {
+                viewToShow.style.display = 'block';
+            }
+            
+            // O adminNav está sempre visível nesta view, então não o escondemos
+            adminNavButtons.forEach(btn => {
+                btn.classList.toggle('active', btn.dataset.view === viewId);
+            });
+
+            switch(viewId) {
+                case 'view-main-menu':
+                    exibirMensagem('Login bem-sucedido!', 'success');
+                    break;
+                case 'view-gerar-pedido':
+                    popularSelectsPedido();
+                    recalcularTotalPedido();
+                    document.getElementById('pedido-comprovante-area').classList.add('hidden');
+                    document.getElementById('form-gerar-pedido').reset();
+                    break;
+                case 'view-gerenciar-pedidos':
+                    popularTabelaPedidos();
+                    break;
+                case 'view-gerenciar-cardapio':
+                    popularTabelaPizzas();
+                    popularTabelaOutrosProdutos();
+                    break;
+                case 'view-gerenciar-cadastros':
+                    popularTabelaClientes();
+                    document.getElementById('form-edit-cliente').classList.add('hidden');
+                    break;
+                case 'view-relatorios':
+                    document.getElementById('output-relatorios').innerHTML = '<p>Selecione um tipo de relatório acima.</p>';
+                    break;
+            }
+        }
+        
+        document.getElementById('btn-admin-logout').addEventListener('click', () => {
+            if (confirm('Deseja sair do painel de funcionário?')) {
+                onLogoutCallback();
+            }
+        });
+        
+        adminNavButtons.forEach(btn => {
+            if(btn.dataset.view) {
+                btn.addEventListener('click', () => showView(btn.dataset.view));
+            }
+        });
+
+        const formAddCliente = document.getElementById('form-add-cliente');
+        const formEditCliente = document.getElementById('form-edit-cliente');
+        const tableClientesBody = document.getElementById('table-gerenciar-clientes').querySelector('tbody');
+        const btnCancelarEdicaoCliente = document.getElementById('btn-cancelar-edicao-cliente');
+        
+        formAddCliente.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const id = gerarProximoId(db.clientes, 3);
+            
+            const novoCliente = {
+                id: id,
+                nome: document.getElementById('cliente-nome').value,
+                telefone: document.getElementById('cliente-telefone').value,
+                endereco: document.getElementById('cliente-endereco').value,
+                cpf: document.getElementById('cliente-cpf').value,
+                status: '1'
+            };
+            
+            db.clientes.push(novoCliente);
+            salvarDB();
+            
+            exibirMensagem(`Cliente "${novoCliente.nome}" cadastrado com sucesso! ID: ${id}`, 'success');
+            formAddCliente.reset();
+        });
+
+        function popularTabelaClientes() {
+            tableClientesBody.innerHTML = '';
+            if (db.clientes.length === 0) {
+                tableClientesBody.innerHTML = '<tr><td colspan="5">Nenhum cliente cadastrado.</td></tr>';
+                return;
+            }
+            
+            db.clientes.forEach(cliente => {
+                const statusTexto = cliente.status === '1' ? 'Ativo' : 'Banido';
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td>${cliente.id}</td>
+                    <td>${cliente.nome}</td>
+                    <td>${cliente.telefone}</td>
+                    <td>${statusTexto}</td>
+                    <td>
+                        <button class="btn-pequeno btn-secundario btn-edit-cliente" data-id="${cliente.id}">Editar</button>
+                        ${cliente.status === '1'
+                            ? `<button class="btn-pequeno btn-aviso btn-ban-cliente" data-id="${cliente.id}">Banir</button>`
+                            : `<button class="btn-pequeno btn-sucesso btn-unban-cliente" data-id="${cliente.id}">Reativar</button>`
+                        }
+                        <button class="btn-pequeno btn-aviso btn-delete-cliente" data-id="${cliente.id}">Deletar</button>
+                    </td>
+                `;
+                tableClientesBody.appendChild(tr);
+            });
+        }
+        
+        tableClientesBody.addEventListener('click', (e) => {
+            const id = e.target.dataset.id;
+            if (!id) return;
+
+            const clienteIndex = db.clientes.findIndex(c => c.id === id);
+            if (clienteIndex === -1) return;
+            
+            const cliente = db.clientes[clienteIndex];
+
+            if (e.target.classList.contains('btn-delete-cliente')) {
+                if (confirm(`Deseja realmente deletar o cliente "${cliente.nome}"?`)) {
+                    db.clientes.splice(clienteIndex, 1);
+                    exibirMensagem('Cliente deletado.', 'success');
+                }
+            }
+            else if (e.target.classList.contains('btn-ban-cliente')) {
+                db.clientes[clienteIndex].status = '0';
+                exibirMensagem(`Cliente "${cliente.nome}" foi banido.`, 'success');
+            }
+            else if (e.target.classList.contains('btn-unban-cliente')) {
+                db.clientes[clienteIndex].status = '1';
+                exibirMensagem(`Cliente "${cliente.nome}" foi reativado.`, 'success');
+            }
+            else if (e.target.classList.contains('btn-edit-cliente')) {
+                document.getElementById('edit-cliente-id').value = cliente.id;
+                document.getElementById('edit-cliente-nome').value = cliente.nome;
+                document.getElementById('edit-cliente-telefone').value = cliente.telefone;
+                document.getElementById('edit-cliente-endereco').value = cliente.endereco;
+                document.getElementById('edit-cliente-cpf').value = cliente.cpf;
+                formEditCliente.classList.remove('hidden');
+                window.scrollTo(0, 0);
+                return;
+            }
+
+            salvarDB();
+            popularTabelaClientes();
+        });
+
+        formEditCliente.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const id = document.getElementById('edit-cliente-id').value;
+            const clienteIndex = db.clientes.findIndex(c => c.id === id);
+            if (clienteIndex === -1) return;
+
+            db.clientes[clienteIndex].nome = document.getElementById('edit-cliente-nome').value;
+            db.clientes[clienteIndex].telefone = document.getElementById('edit-cliente-telefone').value;
+            db.clientes[clienteIndex].endereco = document.getElementById('edit-cliente-endereco').value;
+            db.clientes[clienteIndex].cpf = document.getElementById('edit-cliente-cpf').value;
+            
+            salvarDB();
+            exibirMensagem('Cliente atualizado com sucesso!', 'success');
+            formEditCliente.classList.add('hidden');
+            formEditCliente.reset();
+            popularTabelaClientes();
+        });
+
+        btnCancelarEdicaoCliente.addEventListener('click', () => {
+            formEditCliente.classList.add('hidden');
+            formEditCliente.reset();
+            limparMensagem();
+        });
+
+        const formAddPizza = document.getElementById('form-add-pizza');
+        const formAddOutro = document.getElementById('form-add-outro');
+        const tablePizzasBody = document.getElementById('table-gerenciar-pizzas').querySelector('tbody');
+        const tableOutrosBody = document.getElementById('table-gerenciar-outros').querySelector('tbody');
+        
+        formAddPizza.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const id = gerarProximoId(db.cardapio, 2);
+            
+            const novaPizza = {
+                id: id,
+                sabor: document.getElementById('pizza-sabor').value,
+                ingredientes: document.getElementById('pizza-ingredientes').value,
+                preco: parseFloat(document.getElementById('pizza-preco').value).toFixed(2),
+                status: '1'
+            };
+            
+            db.cardapio.push(novaPizza);
+            salvarDB();
+            
+            exibirMensagem(`Pizza "${novaPizza.sabor}" cadastrada com sucesso! ID: ${id}`, 'success');
+            formAddPizza.reset();
+        });
+
+        formAddOutro.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const id = gerarProximoId(db.outrosProdutos, 2);
+            
+            const novoProduto = {
+                id: id,
+                nome: document.getElementById('outro-nome').value,
+                preco: parseFloat(document.getElementById('outro-preco').value).toFixed(2),
+                status: '1'
+            };
+            
+            db.outrosProdutos.push(novoProduto);
+            salvarDB();
+            
+            exibirMensagem(`Produto "${novoProduto.nome}" cadastrado com sucesso! ID: ${id}`, 'success');
+            formAddOutro.reset();
+        });
+        
+        function popularTabelaPizzas() {
+            tablePizzasBody.innerHTML = '';
+            if (db.cardapio.length === 0) {
+                tablePizzasBody.innerHTML = '<tr><td colspan="5">Nenhuma pizza cadastrada.</td></tr>';
+                return;
+            }
+            
+            db.cardapio.forEach(pizza => {
+                const statusTexto = pizza.status === '1' ? 'Disponível' : 'Indisponível';
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td>${pizza.id}</td>
+                    <td>${pizza.sabor}</td>
+                    <td>R$ ${pizza.preco}</td>
+                    <td>${statusTexto}</td>
+                    <td>
+                        ${pizza.status === '1'
+                            ? `<button class="btn-pequeno btn-aviso btn-set-indisponivel-pizza" data-id="${pizza.id}">Indisponível</button>`
+                            : `<button class="btn-pequeno btn-sucesso btn-set-disponivel-pizza" data-id="${pizza.id}">Disponível</button>`
+                        }
+                        <button class="btn-pequeno btn-aviso btn-delete-pizza" data-id="${pizza.id}">Deletar</button>
+                    </td>
+                `;
+                tablePizzasBody.appendChild(tr);
+            });
+        }
+        
+        function popularTabelaOutrosProdutos() {
+            tableOutrosBody.innerHTML = '';
+            if (db.outrosProdutos.length === 0) {
+                tableOutrosBody.innerHTML = '<tr><td colspan="5">Nenhum outro produto cadastrado.</td></tr>';
+                return;
+            }
+            
+            db.outrosProdutos.forEach(produto => {
+                const statusTexto = produto.status === '1' ? 'Disponível' : 'Indisponível';
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td>${produto.id}</td>
+                    <td>${produto.nome}</td>
+                    <td>R$ ${produto.preco}</td>
+                    <td>${statusTexto}</td>
+                    <td>
+                        ${produto.status === '1'
+                            ? `<button class="btn-pequeno btn-aviso btn-set-indisponivel-outro" data-id="${produto.id}">Indisponível</button>`
+                            : `<button class="btn-pequeno btn-sucesso btn-set-disponivel-outro" data-id="${produto.id}">Disponível</button>`
+                        }
+                        <button class="btn-pequeno btn-aviso btn-delete-outro" data-id="${produto.id}">Deletar</button>
+                    </td>
+                `;
+                tableOutrosBody.appendChild(tr);
+            });
+        }
+        
+        tablePizzasBody.addEventListener('click', (e) => {
+            const id = e.target.dataset.id;
+            if (!id) return;
+            const index = db.cardapio.findIndex(p => p.id === id);
+            if (index === -1) return;
+
+            if (e.target.classList.contains('btn-delete-pizza')) {
+                db.cardapio.splice(index, 1);
+                exibirMensagem('Pizza deletada.', 'success');
+            } else if (e.target.classList.contains('btn-set-indisponivel-pizza')) {
+                db.cardapio[index].status = '0';
+                exibirMensagem('Pizza definida como indisponível.', 'success');
+            } else if (e.target.classList.contains('btn-set-disponivel-pizza')) {
+                db.cardapio[index].status = '1';
+                exibirMensagem('Pizza definida como disponível.', 'success');
+            }
+            salvarDB();
+            popularTabelaPizzas();
+        });
+
+        tableOutrosBody.addEventListener('click', (e) => {
+            const id = e.target.dataset.id;
+            if (!id) return;
+            const index = db.outrosProdutos.findIndex(p => p.id === id);
+            if (index === -1) return;
+
+            if (e.target.classList.contains('btn-delete-outro')) {
+                db.outrosProdutos.splice(index, 1);
+                exibirMensagem('Produto deletado.', 'success');
+            } else if (e.target.classList.contains('btn-set-indisponivel-outro')) {
+                db.outrosProdutos[index].status = '0';
+                exibirMensagem('Produto definido como indisponível.', 'success');
+            } else if (e.target.classList.contains('btn-set-disponivel-outro')) {
+                db.outrosProdutos[index].status = '1';
+                exibirMensagem('Produto definido como disponível.', 'success');
+            }
+            salvarDB();
+            popularTabelaOutrosProdutos();
+        });
+        
+        const formGerarPedido = document.getElementById('form-gerar-pedido');
+        const selectCliente = document.getElementById('pedido-cliente');
+        const selectPizza = document.getElementById('pedido-pizza');
+        const selectOutro = document.getElementById('pedido-outro');
+        const checkAddOutro = document.getElementById('pedido-add-outro');
+        const grupoOutro = document.getElementById('pedido-outro-grupo');
+        const totalDisplay = document.getElementById('pedido-valor-total');
+        const comprovanteArea = document.getElementById('pedido-comprovante-area');
+        
+        function popularSelectsPedido() {
+            selectCliente.innerHTML = '<option value="">Selecione um cliente...</option>';
+            db.clientes.filter(c => c.status === '1').forEach(c => {
+                selectCliente.innerHTML += `<option value="${c.id}">[${c.id}] ${c.nome}</option>`;
+            });
+            
+            selectPizza.innerHTML = '<option value="">Selecione uma pizza...</option>';
+            db.cardapio.filter(p => p.status === '1').forEach(p => {
+                selectPizza.innerHTML += `<option value="${p.id}" data-preco="${p.preco}">[${p.id}] ${p.sabor} - R$ ${p.preco}</option>`;
+            });
+            
+            selectOutro.innerHTML = '<option value="">Selecione um item extra...</option>';
+            db.outrosProdutos.filter(o => o.status === '1').forEach(o => {
+                selectOutro.innerHTML += `<option value="${o.id}" data-preco="${o.preco}">[${o.id}] ${o.nome} - R$ ${o.preco}</option>`;
+            });
+        }
+        
+        checkAddOutro.addEventListener('change', () => {
+            grupoOutro.classList.toggle('hidden', !checkAddOutro.checked);
+            recalcularTotalPedido();
+        });
+
+        const camposRecalculo = [selectPizza, document.getElementById('pedido-qtd-pizza'), checkAddOutro, selectOutro, document.getElementById('pedido-qtd-outro')];
+        camposRecalculo.forEach(campo => campo.addEventListener('change', recalcularTotalPedido));
+        
+        function recalcularTotalPedido() {
+            let total = 0;
+            
+            const pizzaOption = selectPizza.options[selectPizza.selectedIndex];
+            if (pizzaOption && pizzaOption.value) {
+                total += (parseFloat(pizzaOption.dataset.preco) || 0) * (parseInt(document.getElementById('pedido-qtd-pizza').value) || 1);
+            }
+            
+            if (checkAddOutro.checked) {
+                const outroOption = selectOutro.options[selectOutro.selectedIndex];
+                if (outroOption && outroOption.value) {
+                    total += (parseFloat(outroOption.dataset.preco) || 0) * (parseInt(document.getElementById('pedido-qtd-outro').value) || 1);
+                }
+            }
+            
+            totalDisplay.textContent = `Valor Total: R$ ${total.toFixed(2)}`;
+        }
+
+        formGerarPedido.addEventListener('submit', (e) => {
+            e.preventDefault();
+            comprovanteArea.classList.add('hidden');
+            
+            const clienteId = selectCliente.value;
+            const pizzaId = selectPizza.value;
+            
+            const cliente = findClienteById(clienteId);
+            const pizza = findPizzaById(pizzaId);
+            
+            if (!cliente) {
+                exibirMensagem('Erro: Cliente não encontrado ou não selecionado.', 'error');
+                return;
+            }
+            if (cliente.status === '0') {
+                exibirMensagem('Erro: Este cliente está banido e não pode fazer pedidos.', 'error');
+                return;
+            }
+            if (!pizza) {
+                exibirMensagem('Erro: Pizza não encontrada ou não selecionada.', 'error');
+                return;
+            }
+            
+            const qtdPizza = parseInt(document.getElementById('pedido-qtd-pizza').value);
+            const formaPagamento = document.getElementById('pedido-pagamento').value;
+            const dataHora = getDataHoraAtual();
+            const idPedido = gerarProximoId(db.pedidos, 4);
+            
+            let valorTotal = parseFloat(pizza.preco) * qtdPizza;
+            let itemExtra = null;
+            let comprovanteOutrosItens = [];
+            
+            if (checkAddOutro.checked && selectOutro.value) {
+                const outroId = selectOutro.value;
+                const outroProd = findOutroById(outroId);
+                if (outroProd) {
+                    const qtdOutro = parseInt(document.getElementById('pedido-qtd-outro').value);
+                    valorTotal += parseFloat(outroProd.preco) * qtdOutro;
+                    itemExtra = { id: outroId, qtd: qtdOutro };
+                    comprovanteOutrosItens.push({ nome: outroProd.nome, quantidade: qtdOutro });
+                }
+            }
+            
+            const novoPedido = {
+                id: idPedido,
+                clienteId: clienteId,
+                pizzaId: pizzaId,
+                qtdPizza: qtdPizza,
+                valorTotal: valorTotal.toFixed(2),
+                dataHora: dataHora,
+                formaPagamento: formaPagamento,
+                itemExtra: itemExtra,
+                status: 'Recebido'
+            };
+            
+            db.pedidos.push(novoPedido);
+            salvarDB();
+            
+            exibirMensagem(`Pedido ${idPedido} gerado com sucesso!`, 'success');
+            
+            gerarComprovanteHTML(
+                cliente.nome,
+                pizza.sabor,
+                qtdPizza,
+                valorTotal.toFixed(2),
+                formaPagamento,
+                dataHora,
+                comprovanteOutrosItens
+            );
+
+            formGerarPedido.reset();
+            recalcularTotalPedido();
+        });
+        
+        function gerarComprovanteHTML(clienteNome, saborPizza, quantidadePizza, valorTotal, formaPagamento, dataHora, outrosItens) {
+            let outrosItensHTML = '';
+            outrosItens.forEach(item => {
+                outrosItensHTML += `<p><strong>Outro Item:</strong> ${item.nome} x ${item.quantidade}</p>`;
+            });
+
+            comprovanteArea.innerHTML = `
+                <div class="comprovante">
+                    <h3>COMPROVANTE DE PEDIDO</h3>
+                    <p><strong>Cliente:</strong> ${clienteNome}</p>
+                    <p><strong>Pizza:</strong> ${saborPizza} x ${quantidadePizza}</p>
+                    ${outrosItensHTML}
+                    <p><strong>Forma de Pagamento:</strong> ${formaPagamento}</p>
+                    <p><strong>Valor Total:</strong> R$ ${valorTotal}</p>
+                    <p><strong>Data e Hora:</strong> ${dataHora}</p>
+                </div>
+            `;
+            comprovanteArea.classList.remove('hidden');
+        }
+        
+        const tablePedidosBody = document.getElementById('table-gerenciar-pedidos').querySelector('tbody');
+
+        function popularTabelaPedidos() {
+            tablePedidosBody.innerHTML = '';
+            
+            const pedidosOrdenados = [...db.pedidos].reverse(); 
+            
+            if (pedidosOrdenados.length === 0) {
+                tablePedidosBody.innerHTML = '<tr><td colspan="7">Nenhum pedido recebido.</td></tr>';
+                return;
+            }
+
+            pedidosOrdenados.forEach(pedido => {
+                const cliente = findClienteById(pedido.clienteId);
+                const pizza = findPizzaById(pedido.pizzaId);
+                
+                let itensHTML = `Pizza: ${pizza ? pizza.sabor : 'N/A'} (x${pedido.qtdPizza})`;
+                if (pedido.itemExtra) {
+                    const outro = findOutroById(pedido.itemExtra.id);
+                    itensHTML += `<br>Extra: ${outro ? outro.nome : 'N/A'} (x${pedido.itemExtra.qtd})`;
+                }
+                
+                const tr = document.createElement('tr');
+                
+                const statusOptions = ['Recebido', 'Em Preparo', 'Saiu para Entrega', 'Concluído', 'Cancelado'];
+                let statusSelectHTML = `<select class="select-status-pedido" data-id="${pedido.id}">`;
+                statusOptions.forEach(opt => {
+                    statusSelectHTML += `<option value="${opt}" ${pedido.status === opt ? 'selected' : ''}>${opt}</option>`;
+                });
+                statusSelectHTML += '</select>';
+                
+                tr.innerHTML = `
+                    <td>${pedido.id}</td>
+                    <td>${cliente ? cliente.nome : 'Cliente Deletado'}</td>
+                    <td>${itensHTML}</td>
+                    <td>R$ ${pedido.valorTotal}</td>
+                    <td>${pedido.dataHora}</td>
+                    <td>${statusSelectHTML}</td>
+                    <td>
+                        <button class="btn-pequeno btn-aviso btn-delete-pedido" data-id="${pedido.id}">Deletar</button>
+                    </td>
+                `;
+                tablePedidosBody.appendChild(tr);
+            });
+        }
+
+        tablePedidosBody.addEventListener('change', (e) => {
+            if (e.target.classList.contains('select-status-pedido')) {
+                const id = e.target.dataset.id;
+                const novoStatus = e.target.value;
+                
+                const pedido = db.pedidos.find(p => p.id === id);
+                if (pedido) {
+                    pedido.status = novoStatus;
+                    salvarDB();
+                    exibirMensagem(`Status do pedido ${id} atualizado para "${novoStatus}".`, 'success');
+                }
+            }
+        });
+
+        tablePedidosBody.addEventListener('click', (e) => {
+            if (e.target.classList.contains('btn-delete-pedido')) {
+                const id = e.target.dataset.id;
+                const pedidoIndex = db.pedidos.findIndex(p => p.id === id);
+                
+                if (pedidoIndex > -1) {
+                    if (confirm(`Deseja realmente deletar o pedido ${id}?`)) {
+                        db.pedidos.splice(pedidoIndex, 1);
+                        salvarDB();
+                        exibirMensagem('Pedido deletado.', 'success');
+                        popularTabelaPedidos();
+                    }
+                }
+            }
+        });
+
+        const btnRelatorioDiario = document.getElementById('btn-relatorio-diario');
+        const btnRelatorioMensal = document.getElementById('btn-relatorio-mensal');
+        const outputRelatorios = document.getElementById('output-relatorios');
+        
+        btnRelatorioDiario.addEventListener('click', () => {
+            const data = new Date();
+            const dia = data.getDate().toString().padStart(2, '0');
+            const mes = (data.getMonth() + 1).toString().padStart(2, '0');
+            const ano = data.getFullYear();
+            const dataAtual = `${dia}/${mes}/${ano}`;
+
+            const pedidosDoDia = db.pedidos.filter(p => p.dataHora.startsWith(dataAtual));
+            gerarRelatorioHTML(pedidosDoDia, `Relatório do Dia (${dataAtual})`);
+        });
+        
+        btnRelatorioMensal.addEventListener('click', () => {
+            const data = new Date();
+            const mes = (data.getMonth() + 1).toString().padStart(2, '0');
+            const ano = data.getFullYear();
+            const mesAtual = `${mes}/${ano}`;
+
+            const pedidosDoMes = db.pedidos.filter(p => p.dataHora.split(' ')[0].endsWith(mesAtual));
+            gerarRelatorioHTML(pedidosDoMes, `Relatório do Mês (${mesAtual})`);
+        });
+        
+        function gerarRelatorioHTML(pedidosFiltrados, titulo) {
+            let html = `<h3>${titulo}</h3>`;
+            let totalVendas = 0;
+            
+            if (pedidosFiltrados.length === 0) {
+                html += '<p>Nenhum pedido encontrado para este período.</p>';
+                outputRelatorios.innerHTML = html;
+                return;
+            }
+            
+            html += '<table><thead><tr><th>ID Pedido</th><th>Cliente</th><th>Itens</th><th>Valor</th><th>Pagamento</th><th>Data/Hora</th></tr></thead><tbody>';
+            
+            pedidosFiltrados.forEach(pedido => {
+                const cliente = findClienteById(pedido.clienteId);
+                const pizza = findPizzaById(pedido.pizzaId);
+                
+                let itensHTML = `Pizza: ${pizza ? pizza.sabor : 'N/A'} (x${pedido.qtdPizza})`;
+                
+                if (pedido.itemExtra) {
+                    const outro = findOutroById(pedido.itemExtra.id);
+                    itensHTML += `<br>Extra: ${outro ? outro.nome : 'N/A'} (x${pedido.itemExtra.qtd})`;
+                }
+                
+                html += `
+                    <tr>
+                        <td>${pedido.id}</td>
+                        <td>${cliente ? cliente.nome : 'N/A'}</td>
+                        <td>${itensHTML}</td>
+                        <td>R$ ${pedido.valorTotal}</td>
+                        <td>${pedido.formaPagamento}</td>
+                        <td>${pedido.dataHora}</td>
+                    </tr>
+                `;
+                totalVendas += parseFloat(pedido.valorTotal);
+            });
+            
+            html += '</tbody></table>';
+            html += `<h3 style="text-align: right; margin-top: 15px;">Total de Vendas: R$ ${totalVendas.toFixed(2)}</h3>`;
+            
+            outputRelatorios.innerHTML = html;
+        }
+
+        document.getElementById('btn-limpar-dados').addEventListener('click', limparDB);
+        
+        // Seta a view inicial do admin para o menu principal
+        showView('view-main-menu');
+    }
+
+    </script>
 </body>
 </html>
