@@ -56,6 +56,7 @@ Esta versão é _standalone_ e não requer instalação. Ela usa o `LocalStorage
 1.  Clone o repositório (se ainda não o fez).
 2.  Navegue até a pasta `HTML_VERSION` dentro do projeto.
 3.  Abra o arquivo `index.html` diretamente no seu navegador (ex: Google Chrome, Firefox).
+4.  Utilize as credenciais `admin` e senha `admin` para entrar na Área de Funcionários.
 
 ---
 
