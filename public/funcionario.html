@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PizzaSystem - Admin</title>
+    <link rel="stylesheet" href="funcionario.css">
+</head>
+<body>
+
+    <div id="tela-login" class="login-container">
+        <h2>Acesso Restrito</h2>
+        <form id="form-login">
+            <div class="campo">
+                <label>Usuário</label>
+                <input type="text" id="login-user" placeholder="admin">
+            </div>
+            <div class="campo">
+                <label>Senha</label>
+                <input type="password" id="login-pass" placeholder="admin">
+            </div>
+            <button type="submit" class="btn-primary">Entrar</button>
+            <p id="login-error" class="error-msg hidden">Dados incorretos.</p>
+        </form>
+    </div>
+
+    <div id="dashboard" class="dashboard-container hidden">
+        <header class="admin-header">
+            <h1>PizzaSystem <span class="badge-admin">Admin</span></h1>
+            <nav>
+                <button class="nav-btn active" data-target="sec-pedidos">Pedidos</button>
+                <button class="nav-btn" data-target="sec-cardapio">Cardápio</button>
+                <button class="nav-btn" data-target="sec-clientes">Clientes</button>
+                <button id="btn-logout" class="btn-sair">Sair</button>
+            </nav>
+        </header>
+
+        <main>
+            <div id="msg-area" class="mensagem hidden"></div>
+
+            <section id="sec-pedidos" class="section active">
+                <div class="section-header">
+                    <h2>Fila de Pedidos</h2>
+                    <button id="btn-refresh-pedidos" class="btn-small btn-primary">Atualizar Lista</button>
+                </div>
+                <div class="table-responsive">
+                    <table id="tabela-pedidos">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Cliente</th>
+                                <th>Detalhes</th>
+                                <th>Total</th>
+                                <th>Status</th>
+                                <th>Ação</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+            </section>
+
+            <section id="sec-cardapio" class="section">
+                <div class="grid-2-col">
+                    <div class="card">
+                        <h3>Nova Pizza</h3>
+                        <form id="form-add-pizza">
+                            <input type="text" id="pizza-sabor" placeholder="Sabor da Pizza" required>
+                            <textarea id="pizza-ingredientes" placeholder="Ingredientes" required></textarea>
+                            <input type="number" id="pizza-preco" placeholder="Preço (R$)" step="0.01" required>
+                            <button type="submit" class="btn-success">Salvar Pizza</button>
+                        </form>
+                    </div>
+
+                    <div class="card">
+                        <h3>Novo Extra</h3>
+                        <form id="form-add-outro">
+                            <input type="text" id="outro-nome" placeholder="Nome do Produto" required>
+                            <input type="number" id="outro-preco" placeholder="Preço (R$)" step="0.01" required>
+                            <button type="submit" class="btn-success">Salvar Extra</button>
+                        </form>
+                    </div>
+                </div>
+
+                <h3>Itens Cadastrados</h3>
+                <div class="table-responsive">
+                    <table id="tabela-produtos">
+                        <thead>
+                            <tr>
+                                <th>Tipo</th>
+                                <th>Nome</th>
+                                <th>Preço</th>
+                                <th>Ação</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+            </section>
+
+            <section id="sec-clientes" class="section">
+                <div class="card" style="margin-bottom: 20px;">
+                    <h3>Cadastrar Novo Cliente</h3>
+                    <form id="form-add-cliente" style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+                        <input type="text" id="cli-nome" placeholder="Nome Completo" required>
+                        <input type="tel" id="cli-telefone" placeholder="Telefone" required>
+                        <input type="text" id="cli-endereco" placeholder="Endereço Completo" required style="grid-column: span 2;">
+                        <input type="text" id="cli-cpf" placeholder="CPF (Opcional)">
+                        <button type="submit" class="btn-success" style="grid-column: span 2;">Cadastrar Cliente</button>
+                    </form>
+                </div>
+
+                <h2>Base de Clientes</h2>
+                <div class="table-responsive">
+                    <table id="tabela-clientes">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Nome</th>
+                                <th>Telefone</th>
+                                <th>Endereço</th>
+                                <th>Ação</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <script src="funcionario.js"></script>
+</body>
+</html>

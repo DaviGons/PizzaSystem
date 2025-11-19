@@ -19,6 +19,9 @@
   },
   "homepage": "https://github.com/DaviGons/PizzaSystem#readme",
   "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^5.1.0",
+    "mssql": "^12.1.0",
     "readline-sync": "^1.4.10",
     "typescript": "^5.9.3"
   },

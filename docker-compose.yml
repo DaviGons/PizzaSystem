@@ -1,0 +1,26 @@
+version: '3.8'
+
+services:
+  sqlserver:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    container_name: pizza_sql
+    environment:
+      - ACCEPT_EULA=Y
+      - MSSQL_SA_PASSWORD=Pizza!Password123
+    ports:
+      - "1433:1433"
+    volumes:
+      - pizza_data:/var/opt/mssql
+    restart: always
+
+  adminer:
+    image: adminer
+    container_name: pizza_adminer
+    restart: always
+    ports:
+      - "8080:8080"
+    environment:
+      - ADMINER_DEFAULT_SERVER=sqlserver
+
+volumes:
+  pizza_data:
