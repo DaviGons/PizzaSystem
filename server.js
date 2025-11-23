@@ -4,21 +4,22 @@ import cors from 'cors';
 import path from 'path';
 import { fileURLToPath } from 'url';
 
-// Configuração para __dirname
+// Configuração para __dirname (necessário para módulos ES)
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 const app = express();
 const PORT = 3000;
 
-// --- CONFIGURAÇÕES ---
-app.use(express.json());
-app.use(cors());
-app.use(express.static(path.join(__dirname, 'public')));
+// --- CONFIGURAÇÕES BÁSICAS E INSEGURAS ---
+app.use(express.json()); // Aceita corpo JSON
+app.use(cors()); // Permite acesso de qualquer origem (inseguro, mas simples)
+app.use(express.static(path.join(__dirname, 'public'))); // Serve arquivos estáticos
 
+// Configuração do Banco de Dados (Credenciais fixas e inseguras)
 const dbConfig = {
     user: 'sa',
-    password: 'Pizza!Password123',
+    password: 'SenhaFacul123', // NOVA SENHA DE BAIXA SEGURANÇA
     server: 'localhost',
     database: 'PizzaSystem',
     options: { encrypt: false, trustServerCertificate: true }
@@ -27,24 +28,25 @@ const dbConfig = {
 async function connectDB() {
     try {
         await sql.connect(dbConfig);
-        console.log('✅ Banco de Dados Conectado!');
+        console.log('✅ Banco de Dados Conectado! (Sem Segurança)');
     } catch (err) {
-        console.error('❌ Erro ao conectar:', err.message);
+        // Se a conexão falhar, tenta reconectar
+        console.error('❌ Erro ao conectar (tentando novamente em 5s):', err.message);
+        setTimeout(connectDB, 5000); 
     }
 }
-connectDB();
+connectDB(); // Tenta conectar
 
 // --- ROTAS DE PÁGINAS ---
 app.get('/', (req, res) => res.sendFile(path.join(__dirname, 'public', 'cliente.html')));
 app.get('/admin', (req, res) => res.sendFile(path.join(__dirname, 'public', 'funcionario.html')));
 
-// --- API ---
+// --- API (Totalmente Pública e Sem Autenticação) ---
 
 // 1. CLIENTES
 app.get('/api/clientes', async (req, res) => {
     try {
         const result = await sql.query`SELECT * FROM Clientes`;
-        // AQUI ESTÁ A MÁGICA: Convertendo Maiúsculo -> Minúsculo
         const data = result.recordset.map(c => ({
             id: c.Id.toString(),
             nome: c.Nome,
@@ -101,7 +103,7 @@ app.delete('/api/pizzas/:id', async (req, res) => {
     } catch (e) { res.status(500).send(e.message); }
 });
 
-// 3. OUTROS
+// 3. OUTROS PRODUTOS
 app.get('/api/outros', async (req, res) => {
     try {
         const result = await sql.query`SELECT * FROM OutrosProdutos`;

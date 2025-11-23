@@ -1,26 +1,19 @@
 version: '3.8'
 
 services:
+  # Serviço de Banco de Dados: SQL Server
   sqlserver:
     image: mcr.microsoft.com/mssql/server:2022-latest
-    container_name: pizza_sql
+    container_name: pizza_sql_facul
     environment:
       - ACCEPT_EULA=Y
-      - MSSQL_SA_PASSWORD=Pizza!Password123
+      # Senha fácil e sem segurança, usada para acesso SA
+      - MSSQL_SA_PASSWORD=SenhaFacul123 
     ports:
       - "1433:1433"
     volumes:
-      - pizza_data:/var/opt/mssql
+      - pizza_data_facul:/var/opt/mssql
     restart: always
-
-  adminer:
-    image: adminer
-    container_name: pizza_adminer
-    restart: always
-    ports:
-      - "8080:8080"
-    environment:
-      - ADMINER_DEFAULT_SERVER=sqlserver
 
 volumes:
-  pizza_data:
+  pizza_data_facul:
