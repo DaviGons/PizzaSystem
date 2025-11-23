@@ -1,119 +1,108 @@
+
 # 🍕 PizzaSystem
 
 Um sistema de gerenciamento de pizzaria desenvolvido para fins acadêmicos, demonstrando a evolução de uma aplicação de console para uma arquitetura web completa.
 
 O projeto está dividido em duas versões funcionais:
+
 1.  **Versão Web (Full Stack):** Interface gráfica, API Node.js e Banco de Dados SQL.
 2.  **Versão Console (TypeScript):** Interface via terminal e persistência em arquivos de texto.
 
-**Autores:**
-- **GUSTAVO ZAIA PASTRO** (RA 2506964)
-- **DAVI GONÇALVES SILVA** (RA 2505783)
-
----
+-----
 
 ## 📋 Pré-requisitos Globais
 
 Para executar qualquer uma das versões, você precisa ter instalado:
 
-* **[Node.js](https://nodejs.org/)** (v18 ou superior)
-* **Git** (Para clonar o repositório)
-* **[Docker Desktop](https://www.docker.com/products/docker-desktop/)** (Apenas para a Versão Web)
+  * **[Node.js](https://nodejs.org/)** (v18 ou superior)
+  * **Git** (Para clonar o repositório)
+  * **[Docker Desktop](https://www.docker.com/products/docker-desktop/)** (Apenas para a Versão Web)
 
----
+-----
 
 ## 🖥️ Opção 1: Versão Console (TypeScript)
 
-Esta versão roda diretamente no terminal. É ideal para testar a lógica de negócios pura e manipulação de arquivos.
-
-**Arquitetura:** TypeScript → Transpilação para JS → Node.js → Persistência em `.txt`.
+Esta versão roda diretamente no terminal, utilizando lógica de negócios pura e manipulação de arquivos de texto simples para persistência.
 
 ### Passo a Passo:
 
 1.  **Instalar Dependências:**
-    No terminal, na raiz do projeto, baixe as bibliotecas do TypeScript:
+    No terminal, na raiz do projeto, baixe as bibliotecas necessárias, incluindo o TypeScript e a biblioteca `readline-sync`:
+
     ```bash
     npm install
     ```
 
 2.  **Compilar o Código:**
-    O Node.js não roda TypeScript nativamente. Precisamos converter para JavaScript:
+    O código-fonte está em **TypeScript** (`src/index.ts`), e precisa ser transpilado para JavaScript:
+
     ```bash
     npx tsc
     ```
-    *Isso irá gerar uma pasta `/dist` com os arquivos compilados.*
+
+    *Isso irá gerar uma pasta `/dist` com os arquivos compilados, conforme configurado em `tsconfig.json`*.
 
 3.  **Executar:**
-    Rode o arquivo principal gerado:
+    Rode o arquivo principal compilado:
+
     ```bash
     node dist/index.js
     ```
 
 4.  **Uso:**
-    Siga as instruções interativas que aparecerão no terminal para cadastrar clientes e pedidos. Os dados serão salvos em arquivos `.txt` na raiz do projeto.
+    Siga as instruções interativas que aparecerão no terminal para gerenciar clientes, produtos e pedidos. Os dados serão salvos em arquivos `.txt` (como `cadastroCliente.txt` e `pedidos.txt`) na raiz do projeto.
 
----
+-----
 
 ## 🌐 Opção 2: Versão Web (Full Stack)
 
-Esta é a versão moderna com interface gráfica, API e Banco de Dados real.
-
-**Arquitetura:** HTML/JS (Frontend) ↔ Node.js/Express (Backend) ↔ SQL Server (Docker).
+Esta versão utiliza uma arquitetura moderna com interface web, uma API (Node.js/Express) e um banco de dados SQL Server rodando via Docker.
 
 ### Passo a Passo:
 
-1.  **Subir o Banco de Dados:**
-    Certifique-se que o Docker Desktop está aberto e execute:
+1.  **Instalar Dependências:**
+    No terminal, na raiz do projeto, baixe todas as dependências do Node.js:
+
+    ```bash
+    npm install
+    ```
+
+2.  **Subir o Banco de Dados (Docker):**
+    Certifique-se que o **Docker Desktop** está aberto e execute o comando para iniciar o contêiner do SQL Server:
+
     ```bash
     docker-compose up -d
     ```
-    *Aguarde cerca de 20 segundos para o banco iniciar.*
 
-2.  **Configurar o Banco (Apenas na 1ª vez):**
-    O banco nasce vazio. Você precisa criar as tabelas.
-    * Acesse **[http://localhost:8080](http://localhost:8080)** (Adminer).
-    * **Login:** Sistema: `MS SQL`, Servidor: `sqlserver`, Usuário: `sa`, Senha: `Pizza!Password123`.
-    * Clique em **"Comando SQL"** e execute o script de criação (disponível no arquivo `database.sql` ou na documentação do projeto).
+    *Aguarde cerca de **20 segundos** para o banco iniciar completamente. A senha de acesso SA é `SenhaFacul123`*.
 
-3.  **Iniciar o Servidor (API):**
+3.  **Configurar o Banco (Criação de Tabelas):**
+    O script `database.js` contém a lógica para criar o banco de dados chamado `PizzaSystem` e as tabelas (Clientes, Pizzas, Pedidos, etc.).
+
+      * Rode o script de configuração:
+        ```bash
+        node database.js
+        ```
+
+4.  **Iniciar o Servidor (API):**
+    Execute o arquivo principal do backend:
+
     ```bash
     node server.js
     ```
-    *O terminal exibirá: `🚀 Servidor rodando em http://localhost:3000`*
 
-4.  **Acessar no Navegador:**
-    * **Área do Cliente:** [http://localhost:3000](http://localhost:3000)
-    * **Área do Funcionário:** [http://localhost:3000/admin](http://localhost:3000/admin) (Login: `admin` / `admin`).
+    *O terminal exibirá: `🚀 Servidor rodando em http://localhost:3000`*.
 
----
+5.  **Acessar no Navegador:**
 
-## 📂 Estrutura de Arquivos
-
-Entenda onde está cada parte do projeto:
-
-```text
-/PizzaSystem
-│
-├── src/                 # Código Fonte da Versão Console (TypeScript)
-│   └── index.ts         # Ponto de entrada do Console
-│
-├── dist/                # Código Compilado da Versão Console (Gerado automático)
-│
-├── public/              # Frontend da Versão Web
-│   ├── cliente.html     # Interface do Cliente
-│   ├── funcionario.html # Interface do Admin
-│   └── *.js / *.css     # Scripts e Estilos
-│
-├── server.js            # Backend da Versão Web (API Node.js)
-├── docker-compose.yml   # Configuração do Banco de Dados
-├── package.json         # Gerenciador de dependências
-└── tsconfig.json        # Configuração do TypeScript
-````
+      * **Área do Cliente:** [http://localhost:3000](https://www.google.com/search?q=http://localhost:3000)
+      * **Área do Funcionário (Admin):** [http://localhost:3000/admin](https://www.google.com/search?q=http://localhost:3000/admin)
+          * **Login de Acesso:** `admin` / `admin`.
 
 -----
 
 ## ⚠️ Notas Importantes
 
-  * **Conflito de Portas:** Se não conseguir rodar o servidor web, verifique se a porta `3000` já não está sendo usada.
-  * **Dados:** Os dados da Versão Console (arquivos `.txt`) **não** são compartilhados com a Versão Web (SQL Server). São sistemas independentes.
-  * **Reiniciar Banco:** Se precisar limpar o banco de dados, rode `docker-compose down -v` e depois suba novamente.
+  * **Limpeza do Banco:** Se precisar limpar completamente o banco de dados (remover contêiner e dados), rode: `docker-compose down -v`.
+  * **Porta:** Se a porta `3000` estiver em uso, você precisará alterar a constante `PORT` no arquivo `server.js`.
+  * **Versões Independentes:** Os dados da **Versão Console** (arquivos `.txt`) **não** são compartilhados com a **Versão Web** (SQL Server). São sistemas totalmente independentes.
