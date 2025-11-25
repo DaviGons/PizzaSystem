@@ -1,7 +1,7 @@
 
 # 🍕 PizzaSystem
 
-Um sistema de gerenciamento de pizzaria desenvolvido para fins acadêmicos, demonstrando a evolução de uma aplicação de console para uma arquitetura web completa.
+Um sistema de gerenciamento de pizzaria desenvolvido pelos alunos Davi Gonçalves Silva (RA 2505783) e Gustavo Zaia Pastro (RA 2506964) para fins acadêmicos, demonstrando a evolução de uma aplicação de console para uma arquitetura web completa.
 
 O projeto está dividido em duas versões funcionais:
 
